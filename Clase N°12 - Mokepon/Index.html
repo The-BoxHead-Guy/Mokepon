@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./Style.css" />
+    <title>Mokepon</title>
+  </head>
+
+  <body>
+    <section id="Seleccionar-Mascota">
+      <h1 id="title">Mokepon 🔥</h1>
+      <h2 class="pet-title">Elige a tu mascota:</h2>
+
+      <div id="pet-interface">
+        <!--<label for="None">None</label>
+            <input type="radio" name="Mascota" id="None" checked /> -->
+
+        <input type="radio" name="Mascota" id="Pikachu" />
+        <label for="Pikachu" id="pet1">
+          <p>Pikachu</p>
+          <img
+            src="./assets/mokepons_mokepon_capipepo_attack.png"
+            alt="Pikachu"
+          />
+        </label>
+
+        <input type="radio" name="Mascota" id="Charmander" />
+        <label for="Charmander" id="pet2">
+          <p>Charmander</p>
+          <img
+            src="./assets/mokepons_mokepon_hipodoge_attack.png"
+            alt="Charmander"
+          />
+        </label>
+
+        <input type="radio" name="Mascota" id="Pickle" />
+        <label for="Pickle" id="pet3">
+          <p>Pickle</p>
+          <img
+            src="./assets/mokepons_mokepon_ratigueya_attack.png"
+            alt="Pickle"
+          />
+        </label>
+      </div>
+
+      <button id="Select-Mascota">Seleccionar Mascota</button>
+    </section>
+
+    <section id="Seleccionar-Ataque">
+      <h1 id="title">Mokepon 🔥</h1>
+      <h2 class="pet-title">Elige a tu ataque:</h2>
+
+      <div class="cajita-botones">
+        <button id="btn-Fuego" class="boton-de-ataque">Fuego 🔥</button>
+        <button id="btn-Agua" class="boton-de-ataque">Agua 🌊</button>
+        <button id="btn-Tierra" class="boton-de-ataque">Tierra 🌍</button>
+      </div>
+      <div>
+        <div class="battle-result">
+          <!-- Message display if player or enemy win or lose -->
+          <section id="Mensajes">
+            <p id="Result">¡Buena suerte!</p>
+          </section>
+
+          <!-- Button display -->
+          <section id="Reiniciar">
+            <button id="boton-reinicio" disabled>Reiniciar</button>
+          </section>
+        </div>
+        <!-- Container -->
+        <div id="pet-messages">
+          <!-- child #1 -->
+          <div class="display-messages">
+            <span id="select-mascota"></span><br />
+            <span id="vidas-jugador">3</span> vidas
+            <div id="attack-player">
+              <!-- Messages -->
+            </div>
+          </div>
+          <!-- child #2 -->
+          <div class="display-result">
+            <span id="select-mascota-enemigo"></span><br />
+            <span id="vidas-enemigo">3</span> vidas
+            <div id="attack-enemy">
+              <!-- Messages -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- <section id="Mensajes">
+        <p>Tu mascota usó un ataque de <span id="player-attack"></span>, el enemigo usó un ataque de <span
+                id="enemy-attack"></span> </p>
+    </section> -->
+    <script src="./Javascript/Mokepon.js"></script>
+  </body>
+</html>
