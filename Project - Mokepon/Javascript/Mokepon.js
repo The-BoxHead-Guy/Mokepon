@@ -16,29 +16,42 @@ let vidasEnemigo = 3;
 // Beginning the GAME
 
 function beginGame() {
+  // Section - GetElementById
+
+  // Selecting the pet
   let buttonPetPlayer = document.getElementById("Select-Mascota");
+
+  // Selecting the attack
+  let buttonFuego = document.getElementById("btn-Fuego");
+  let buttonAgua = document.getElementById("btn-Agua");
+  let buttonTierra = document.getElementById("btn-Tierra");
+
+  // Resetting game
+  let buttonReset = document.getElementById("boton-reinicio");
+
+  // Hidden Section
+  let hiddenSection = document.getElementById("Seleccionar-Ataque");
+  let hiddenSectionReset = document.getElementById("Reiniciar");
+  let hiddenSectionPetMessages = document.getElementById("pet-messages");
+
+  // --------------------------------------------------------------------
+  // Event listeners
+
+  // Pet Actions
   buttonPetPlayer.addEventListener("click", seleccionarMascotaJugador);
 
-  let buttonFuego = document.getElementById("btn-Fuego");
+  // Attack actions
   buttonFuego.addEventListener("click", attackFuego);
-
-  let buttonAgua = document.getElementById("btn-Agua");
   buttonAgua.addEventListener("click", attackAgua);
-
-  let buttonTierra = document.getElementById("btn-Tierra");
   buttonTierra.addEventListener("click", attackTierra);
 
-  let buttonReset = document.getElementById("boton-reinicio");
+  // Reset actions
   buttonReset.disabled = true;
   buttonReset.addEventListener("click", gameReset);
 
-  let hiddenSection = document.getElementById("Seleccionar-Ataque");
+  // Hiding actions
   hiddenSection.style.display = "none";
-
-  let hiddenSectionReset = document.getElementById("Reiniciar");
   hiddenSectionReset.style.display = "none";
-
-  let hiddenSectionPetMessages = document.getElementById("pet-messages");
   hiddenSectionPetMessages.style.display = "none";
 }
 
@@ -50,21 +63,18 @@ function attackFuego() {
   ataqueJugador = fireAttack;
   getEnemyAttack();
   createMessage();
-  // getPlayerEnemyAttackText()
 }
 
 function attackAgua() {
   ataqueJugador = waterAttack;
   getEnemyAttack();
   createMessage();
-  // getPlayerEnemyAttackText()
 }
 
 function attackTierra() {
   ataqueJugador = earthAttack;
   getEnemyAttack();
   createMessage();
-  // getPlayerEnemyAttackText()
 }
 
 //--------------------------------------------------------
@@ -205,20 +215,17 @@ function combatResult(string, stringTwo) {
 
 //--------------------------------------------------------
 
-// This next function will get the randomAttack from enemyright after clicking the "Fire, water or earth" buttom
+// This next function will get the randomAttack from enemy right after clicking the "Fire, water or earth" buttom
 
 function getEnemyAttack() {
   let typeAttack = random(1, 3);
 
   if (typeAttack == 1) {
     ataqueEnemigo = fireAttack;
-    // alert(ataqueEnemigo)
   } else if (typeAttack == 2) {
     ataqueEnemigo = waterAttack;
-    // alert(ataqueEnemigo)
   } else {
     ataqueEnemigo = earthAttack;
-    // alert(ataqueEnemigo)
   }
 }
 
