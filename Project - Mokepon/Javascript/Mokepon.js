@@ -13,27 +13,38 @@ let vidasEnemigo = 3;
 
 //--------------------------------------------------------
 
+// Preparing variables to be re-used later
+
+// Section - GetElementById
+
+// Selecting the pet
+let buttonPetPlayer = document.getElementById("Select-Mascota");
+
+// Selecting the attack
+let buttonFuego = document.getElementById("btn-Fuego");
+let buttonAgua = document.getElementById("btn-Agua");
+let buttonTierra = document.getElementById("btn-Tierra");
+
+// Resetting game
+let buttonReset = document.getElementById("boton-reinicio");
+
+// Hidden Section
+let hiddenSection = document.getElementById("Seleccionar-Ataque");
+let hiddenSectionReset = document.getElementById("Reiniciar");
+let hiddenSectionPetMessages = document.getElementById("pet-messages");
+
+// Saving player pets variables
+let inputPikachu = document.getElementById("Pikachu");
+let inputCharmander = document.getElementById("Charmander");
+let inputPickle = document.getElementById("Pickle");
+
+// Changing the DOM
+let selectMascotaJugador = document.getElementById("select-mascota");
+let selectMascotaEnemigo = document.getElementById("select-mascota-enemigo");
+
 // Beginning the GAME
 
 function beginGame() {
-  // Section - GetElementById
-
-  // Selecting the pet
-  let buttonPetPlayer = document.getElementById("Select-Mascota");
-
-  // Selecting the attack
-  let buttonFuego = document.getElementById("btn-Fuego");
-  let buttonAgua = document.getElementById("btn-Agua");
-  let buttonTierra = document.getElementById("btn-Tierra");
-
-  // Resetting game
-  let buttonReset = document.getElementById("boton-reinicio");
-
-  // Hidden Section
-  let hiddenSection = document.getElementById("Seleccionar-Ataque");
-  let hiddenSectionReset = document.getElementById("Reiniciar");
-  let hiddenSectionPetMessages = document.getElementById("pet-messages");
-
   // --------------------------------------------------------------------
   // Event listeners
 
@@ -275,15 +286,6 @@ function seleccionarMascotaJugador() {
       selectMascotaEnemigo.innerHTML = "Aún sin seleccionar";
     }
   }
-
-  // Saving player pets variables
-  let inputPikachu = document.getElementById("Pikachu");
-  let inputCharmander = document.getElementById("Charmander");
-  let inputPickle = document.getElementById("Pickle");
-
-  // Changing the DOM
-  let selectMascotaJugador = document.getElementById("select-mascota");
-  let selectMascotaEnemigo = document.getElementById("select-mascota-enemigo");
 
   // Saving Enemy's pet variable
   let randomSelect = random(1, 3);
