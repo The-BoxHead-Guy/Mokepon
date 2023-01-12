@@ -1,5 +1,7 @@
 // After the webpage charges, the JS document will take the next event as a result of its verification of the "Window.addEventListener('Load", beginGame);
 
+/todo- Change all "let" variables of get ElementById segments to "const"/
+
 // Global Variables
 let ataqueJugador;
 let ataqueEnemigo;
@@ -18,29 +20,51 @@ let vidasEnemigo = 3;
 // Section - GetElementById
 
 // Selecting the pet
-let buttonPetPlayer = document.getElementById("Select-Mascota");
+const buttonPetPlayer = document.getElementById("Select-Mascota");
 
 // Selecting the attack
-let buttonFuego = document.getElementById("btn-Fuego");
-let buttonAgua = document.getElementById("btn-Agua");
-let buttonTierra = document.getElementById("btn-Tierra");
+const buttonFuego = document.getElementById("btn-Fuego");
+const buttonAgua = document.getElementById("btn-Agua");
+const buttonTierra = document.getElementById("btn-Tierra");
 
 // Resetting game
-let buttonReset = document.getElementById("boton-reinicio");
+const buttonReset = document.getElementById("boton-reinicio");
 
 // Hidden Section
-let hiddenSection = document.getElementById("Seleccionar-Ataque");
-let hiddenSectionReset = document.getElementById("Reiniciar");
-let hiddenSectionPetMessages = document.getElementById("pet-messages");
+const hiddenSection = document.getElementById("Seleccionar-Ataque");
+const hiddenSectionReset = document.getElementById("Reiniciar");
+const hiddenSectionPetMessages = document.getElementById("pet-messages");
 
 // Saving player pets variables
-let inputPikachu = document.getElementById("Pikachu");
-let inputCharmander = document.getElementById("Charmander");
-let inputPickle = document.getElementById("Pickle");
+const inputPikachu = document.getElementById("Pikachu");
+const inputCharmander = document.getElementById("Charmander");
+const inputPickle = document.getElementById("Pickle");
 
 // Changing the DOM
-let selectMascotaJugador = document.getElementById("select-mascota");
-let selectMascotaEnemigo = document.getElementById("select-mascota-enemigo");
+const selectMascotaJugador = document.getElementById("select-mascota");
+const selectMascotaEnemigo = document.getElementById("select-mascota-enemigo");
+
+// Player & enemy lifes
+const petPLayerLife = document.getElementById("vidas-jugador");
+const petEnemyLife = document.getElementById("vidas-enemigo");
+
+// Buttoms
+const fireAttackButtom = document.getElementById("btn-Fuego");
+const waterAttackButtom = document.getElementById("btn-Agua");
+const earthAttackButtom = document.getElementById("btn-Tierra");
+
+// Attack section
+const spanPlayerAttack = document.getElementById("player-attack");
+const spanEnemyAttack = document.getElementById("enemy-attack");
+const hidePetSection = document.getElementById("Seleccionar-Mascota");
+const showAttackSection = document.getElementById("Seleccionar-Ataque");
+const sectionPetMessage = document.getElementById("none-case");
+const showSectionPetMessages = document.getElementById("pet-messages");
+const showMessage = document.getElementById("Result");
+
+// Attack messages
+const attackPlayerMessage = document.getElementById("attack-player");
+const attackEnemyMessage = document.getElementById("attack-enemy");
 
 // Beginning the GAME
 
@@ -120,9 +144,9 @@ function createMessage() {
   // ----------------------------------------------
 
   // Showing the text as well as the element
-  let attackPlayerMessage = document.getElementById("attack-player");
+
   attackPlayerMessage.appendChild(attackPlayer);
-  let attackEnemyMessage = document.getElementById("attack-enemy");
+
   attackEnemyMessage.appendChild(attackEnemy);
 
   endBattle();
@@ -131,38 +155,29 @@ function createMessage() {
 // Function which is going to minus the life of the pets
 
 function lifePetPlayer() {
-  let petPLayerLife = document.getElementById("vidas-jugador");
-
   petPLayerLife.innerHTML = vidasJugador;
 }
 
 function lifePetEnemy() {
-  let petEnemyLife = document.getElementById("vidas-enemigo");
-
   petEnemyLife.innerHTML = vidasEnemigo;
 }
 
 // Reset Buttom
 
 function battleEnded() {
-  let buttonReset = document.getElementById("boton-reinicio");
   buttonReset.disabled = false;
   buttonReset.addEventListener("click", gameReset);
 
-  let hiddenSectionReset = document.getElementById("Reiniciar");
   hiddenSectionReset.style.display = "flex";
 }
 
 // Dishabilitating Fire, Water and Earth Buttoms
 
 function attackButtomDisabled() {
-  let fireAttackButtom = document.getElementById("btn-Fuego");
   fireAttackButtom.style.display = "none";
 
-  let waterAttackButtom = document.getElementById("btn-Agua");
   waterAttackButtom.style.display = "none";
 
-  let earthAttackButtom = document.getElementById("btn-Tierra");
   earthAttackButtom.style.display = "none";
 }
 
@@ -173,7 +188,6 @@ function endBattle() {
   if (vidasJugador == 0) {
     // alert("Has perdido, mejor suerte para la próxima 😒");
 
-    let showMessage = document.getElementById("Result");
     showMessage.innerHTML = "Has perdido, mejor suerte para la próxima";
 
     battleEnded();
@@ -182,7 +196,6 @@ function endBattle() {
   } else if (vidasEnemigo == 0) {
     // alert("El jugador ha ganado, ¡Enhorabuena! 😉");
 
-    let showMessage = document.getElementById("Result");
     showMessage.innerHTML = "¡Has ganado! Enhorabuena!";
 
     battleEnded();
@@ -244,9 +257,6 @@ function getEnemyAttack() {
 
 function getPlayerEnemyAttackText() {
   {
-    let spanPlayerAttack = document.getElementById("player-attack");
-    let spanEnemyAttack = document.getElementById("enemy-attack");
-
     spanPlayerAttack.innerHTML = ataqueJugador;
     spanEnemyAttack.innerHTML = ataqueEnemigo;
   }
@@ -263,12 +273,10 @@ function random(min, max) {
 // Creating dissapearing or appearing Messages
 
 function sectionPetSelect() {
-  let hidePetSection = document.getElementById("Seleccionar-Mascota");
   hidePetSection.style.display = "none";
 }
 
 function sectionAttackSelect() {
-  let showAttackSection = document.getElementById("Seleccionar-Ataque");
   showAttackSection.style.display = "flex";
 }
 
@@ -312,14 +320,12 @@ function seleccionarMascotaJugador() {
     let noneMessage = document.createElement("p");
     noneMessage.innerHTML = "Selecciona una mascota para poder avanzar";
 
-    let sectionPetMessage = document.getElementById("none-case");
     sectionPetMessage.appendChild(noneMessage);
   }
 
   // local functions
 
   function displaySectionPetMessages() {
-    let showSectionPetMessages = document.getElementById("pet-messages");
     showSectionPetMessages.style.display = "grid";
   }
 }
