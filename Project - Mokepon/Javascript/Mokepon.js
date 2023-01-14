@@ -1,7 +1,5 @@
 // After the webpage charges, the JS document will take the next event as a result of its verification of the "Window.addEventListener('Load", beginGame);
 
-/todo- Change all "let" variables of get ElementById segments to "const"/
-
 // Global Variables
 let ataqueJugador;
 let ataqueEnemigo;
@@ -12,6 +10,32 @@ const earthAttack = "TIERRA 🌍";
 
 let vidasJugador = 3;
 let vidasEnemigo = 3;
+
+// Arrays
+
+let Mokepones = [];
+
+/* Creating a class as well as an object named "Mokepon" */
+
+class Mokepon {
+  constructor (name, photo, vidas) {
+    this.name = name;
+    this.photo = photo;
+    this.vidas = vidas;
+  }
+}
+
+/* Creating the objects (Mokepons) */
+
+let pikachu = new Mokepon ('Pikachu', './assets/mokepons_mokepon_capipepo_attack.png', 3);
+let charmander = new Mokepon ('Charmander', './assets/mokepons_mokepon_hipodoge_attack.png', 3);
+let pickle = new Mokepon ('Pickle', './assets/mokepons_mokepon_ratigueya_attack.png', 3);
+
+/* Then, we need to push the information into an array */
+
+Mokepones.push(pikachu, charmander, pickle);
+console.log(Mokepones);
+/* console.log(Mokepones.length); */
 
 //--------------------------------------------------------
 
@@ -65,6 +89,8 @@ const showMessage = document.getElementById("Result");
 // Attack messages
 const attackPlayerMessage = document.getElementById("attack-player");
 const attackEnemyMessage = document.getElementById("attack-enemy");
+
+
 
 // Beginning the GAME
 
