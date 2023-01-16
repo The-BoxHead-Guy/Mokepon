@@ -18,24 +18,62 @@ let Mokepones = [];
 /* Creating a class as well as an object named "Mokepon" */
 
 class Mokepon {
-  constructor (name, photo, vidas) {
+  constructor(name, photo, vidas) {
     this.name = name;
     this.photo = photo;
     this.vidas = vidas;
+    this.ataques = [];
   }
 }
 
 /* Creating the objects (Mokepons) */
 
-let pikachu = new Mokepon ('Pikachu', './assets/mokepons_mokepon_capipepo_attack.png', 3);
-let charmander = new Mokepon ('Charmander', './assets/mokepons_mokepon_hipodoge_attack.png', 3);
-let pickle = new Mokepon ('Pickle', './assets/mokepons_mokepon_ratigueya_attack.png', 3);
+let pikachu = new Mokepon(
+  "Pikachu",
+  "./assets/mokepons_mokepon_capipepo_attack.png",
+  3
+);
+let charmander = new Mokepon(
+  "Charmander",
+  "./assets/mokepons_mokepon_hipodoge_attack.png",
+  3
+);
+let pickle = new Mokepon(
+  "Pickle",
+  "./assets/mokepons_mokepon_ratigueya_attack.png",
+  3
+);
 
 /* Then, we need to push the information into an array */
 
 Mokepones.push(pikachu, charmander, pickle);
 console.log(Mokepones);
 /* console.log(Mokepones.length); */
+
+// Using "push" to generate the attacks
+pikachu.ataques.push(
+  { name: "Agua 🌊", id: "btn-Agua" },
+  { name: "Agua 🌊", id: "btn-Agua" },
+  { name: "Agua 🌊", id: "btn-Agua" },
+  { name: "Tierra 🌍", id: "btn-Tierra" },
+  { name: "Fuego 🔥", id: "btn-Fuego" }
+);
+charmander.ataques.push(
+  { name: "Fuego 🔥", id: "btn-Fuego" },
+  { name: "Fuego 🔥", id: "btn-Fuego" },
+  { name: "Fuego 🔥", id: "btn-Fuego" },
+  { name: "Tierra 🌍", id: "btn-Tierra" },
+  { name: "Agua 🌊", id: "btn-Fuego" }
+);
+pickle.ataques.push(
+  { name: "Tierra 🌍", id: "btn-Tierra" },
+  { name: "Tierra 🌍", id: "btn-Tierra" },
+  { name: "Tierra 🌍", id: "btn-Tierra" },
+  { name: "Agua 🌊", id: "btn-Agua" },
+  { name: "Fuego 🔥", id: "btn-Fuego" }
+);
+
+console.log(pikachu.ataques);
 
 //--------------------------------------------------------
 
@@ -89,8 +127,6 @@ const showMessage = document.getElementById("Result");
 // Attack messages
 const attackPlayerMessage = document.getElementById("attack-player");
 const attackEnemyMessage = document.getElementById("attack-enemy");
-
-
 
 // Beginning the GAME
 
