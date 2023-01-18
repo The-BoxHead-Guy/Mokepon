@@ -1,6 +1,58 @@
 // After the webpage charges, the JS document will take the next event as a result of its verification of the "Window.addEventListener('Load", beginGame);
 
+// Preparing variables to be re-used later
+
+// Section - GetElementById
+// Selecting the pet
+const buttonPetPlayer = document.getElementById("Select-Mascota");
+
+// Selecting the attack
+const buttonFuego = document.getElementById("btn-Fuego");
+const buttonAgua = document.getElementById("btn-Agua");
+const buttonTierra = document.getElementById("btn-Tierra");
+
+// Resetting game
+const buttonReset = document.getElementById("boton-reinicio");
+
+// Hidden Section
+const hiddenSection = document.getElementById("Seleccionar-Ataque");
+const hiddenSectionReset = document.getElementById("Reiniciar");
+const hiddenSectionPetMessages = document.getElementById("pet-messages");
+
+// Saving player pets variables
+const inputPikachu = document.getElementById("Pikachu");
+const inputCharmander = document.getElementById("Charmander");
+const inputPickle = document.getElementById("Pickle");
+
+// Changing the DOM
+const selectMascotaJugador = document.getElementById("select-mascota");
+const selectMascotaEnemigo = document.getElementById("select-mascota-enemigo");
+
+// Player & enemy lifes
+const petPLayerLife = document.getElementById("vidas-jugador");
+const petEnemyLife = document.getElementById("vidas-enemigo");
+
+// Buttoms
+const fireAttackButtom = document.getElementById("btn-Fuego");
+const waterAttackButtom = document.getElementById("btn-Agua");
+const earthAttackButtom = document.getElementById("btn-Tierra");
+
+// Attack section
+const spanPlayerAttack = document.getElementById("player-attack");
+const spanEnemyAttack = document.getElementById("enemy-attack");
+const hidePetSection = document.getElementById("Seleccionar-Mascota");
+const showAttackSection = document.getElementById("Seleccionar-Ataque");
+const sectionPetMessage = document.getElementById("none-case");
+const showSectionPetMessages = document.getElementById("pet-messages");
+const showMessage = document.getElementById("Result");
+
+// Attack messages
+const attackPlayerMessage = document.getElementById("attack-player");
+const attackEnemyMessage = document.getElementById("attack-enemy");
+
 // Global Variables
+const containerCards = document.getElementById('containerCards')
+
 let ataqueJugador;
 let ataqueEnemigo;
 
@@ -10,6 +62,9 @@ const earthAttack = "TIERRA 🌍";
 
 let vidasJugador = 3;
 let vidasEnemigo = 3;
+
+let mokeponOption = 0;
+
 
 // Arrays
 
@@ -77,57 +132,6 @@ console.log(pikachu.ataques);
 
 //--------------------------------------------------------
 
-// Preparing variables to be re-used later
-
-// Section - GetElementById
-
-// Selecting the pet
-const buttonPetPlayer = document.getElementById("Select-Mascota");
-
-// Selecting the attack
-const buttonFuego = document.getElementById("btn-Fuego");
-const buttonAgua = document.getElementById("btn-Agua");
-const buttonTierra = document.getElementById("btn-Tierra");
-
-// Resetting game
-const buttonReset = document.getElementById("boton-reinicio");
-
-// Hidden Section
-const hiddenSection = document.getElementById("Seleccionar-Ataque");
-const hiddenSectionReset = document.getElementById("Reiniciar");
-const hiddenSectionPetMessages = document.getElementById("pet-messages");
-
-// Saving player pets variables
-const inputPikachu = document.getElementById("Pikachu");
-const inputCharmander = document.getElementById("Charmander");
-const inputPickle = document.getElementById("Pickle");
-
-// Changing the DOM
-const selectMascotaJugador = document.getElementById("select-mascota");
-const selectMascotaEnemigo = document.getElementById("select-mascota-enemigo");
-
-// Player & enemy lifes
-const petPLayerLife = document.getElementById("vidas-jugador");
-const petEnemyLife = document.getElementById("vidas-enemigo");
-
-// Buttoms
-const fireAttackButtom = document.getElementById("btn-Fuego");
-const waterAttackButtom = document.getElementById("btn-Agua");
-const earthAttackButtom = document.getElementById("btn-Tierra");
-
-// Attack section
-const spanPlayerAttack = document.getElementById("player-attack");
-const spanEnemyAttack = document.getElementById("enemy-attack");
-const hidePetSection = document.getElementById("Seleccionar-Mascota");
-const showAttackSection = document.getElementById("Seleccionar-Ataque");
-const sectionPetMessage = document.getElementById("none-case");
-const showSectionPetMessages = document.getElementById("pet-messages");
-const showMessage = document.getElementById("Result");
-
-// Attack messages
-const attackPlayerMessage = document.getElementById("attack-player");
-const attackEnemyMessage = document.getElementById("attack-enemy");
-
 // Beginning the GAME
 
 function beginGame() {
@@ -150,6 +154,21 @@ function beginGame() {
   hiddenSection.style.display = "none";
   hiddenSectionReset.style.display = "none";
   hiddenSectionPetMessages.style.display = "none";
+
+  // Iterating the process
+  Mokepones.forEach((Mokepon) => {
+    mokeponOption = `
+    <input type="radio" name="Mascota" id=${Mokepon.name} />
+        <label for=${Mokepon.name} id="pet1">
+          <p>${Mokepon.name}</p>
+          <img
+            src=${Mokepon.photo}
+            alt=${Mokepon.name}
+          />
+        </label>
+    `
+   containerCards.innerHTML += mokeponOption
+  })
 }
 
 //--------------------------------------------------------

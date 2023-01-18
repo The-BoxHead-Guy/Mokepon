@@ -102,6 +102,10 @@ body {
   gap: 10px;
 }
 
+#containerCards {
+  display: flex;
+}
+
 /* Responsive design */
 @media (max-width: 500px) {
   #pet-interface {
