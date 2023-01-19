@@ -27,11 +27,6 @@ const selectMascotaEnemigo = document.getElementById("select-mascota-enemigo");
 const petPLayerLife = document.getElementById("vidas-jugador");
 const petEnemyLife = document.getElementById("vidas-enemigo");
 
-// Buttoms
-const fireAttackButtom = document.getElementById("btn-Fuego");
-const waterAttackButtom = document.getElementById("btn-Agua");
-const earthAttackButtom = document.getElementById("btn-Tierra");
-
 // Attack section
 const spanPlayerAttack = document.getElementById("player-attack");
 const spanEnemyAttack = document.getElementById("enemy-attack");
@@ -47,6 +42,7 @@ const attackEnemyMessage = document.getElementById("attack-enemy");
 
 // Global Variables
 const containerCards = document.getElementById("containerCards");
+const containerAttacks = document.getElementById('containerAttacks')
 
 // Saving player pets variables
 let inputPikachu;
@@ -64,6 +60,14 @@ let vidasJugador = 3;
 let vidasEnemigo = 3;
 
 let mokeponOption = 0;
+
+let mascotaJugador
+let ataquesMokepon
+
+// Buttoms
+let fireAttackButtom 
+let waterAttackButtom
+let earthAttackButtom
 
 // Arrays
 
@@ -140,11 +144,6 @@ function beginGame() {
 
   // Pet Actions
   buttonPetPlayer.addEventListener("click", seleccionarMascotaJugador);
-
-  // Attack actions
-  buttonFuego.addEventListener("click", attackFuego);
-  buttonAgua.addEventListener("click", attackAgua);
-  buttonTierra.addEventListener("click", attackTierra);
 
   // Reset actions
   buttonReset.disabled = true;
@@ -388,18 +387,24 @@ function seleccionarMascotaJugador() {
 
   if (inputPikachu.checked) {
     selectMascotaJugador.innerHTML = inputPikachu.id;
+    mascotaJugador = inputPikachu.id;
+
     petNumberChange();
     displaySectionPetMessages();
     sectionPetSelect();
     sectionAttackSelect();
   } else if (inputCharmander.checked) {
     selectMascotaJugador.innerHTML = inputCharmander.id;
+    mascotaJugador = inputCharmander.id;
+
     petNumberChange();
     displaySectionPetMessages();
     sectionPetSelect();
     sectionAttackSelect();
   } else if (inputPickle.checked) {
     selectMascotaJugador.innerHTML = inputPickle.id;
+    mascotaJugador = inputPickle.id;
+
     petNumberChange();
     displaySectionPetMessages();
     sectionPetSelect();
@@ -413,9 +418,39 @@ function seleccionarMascotaJugador() {
 
   // local functions
 
+  extraerAtaques(mascotaJugador) 
+
   function displaySectionPetMessages() {
     showSectionPetMessages.style.display = "grid";
   }
+}
+
+function extraerAtaques(mascotaJugador) {
+  let ataques
+  for (let i = 0; i < Mokepones.length; i++) {
+    if (mascotaJugador === Mokepones[i].name) {
+      ataques = Mokepones[i].ataques;
+    }
+  }
+  mostrarAtaques(ataques);
+}
+
+function mostrarAtaques(ataques) {
+  ataques.forEach((ataques) => {
+  ataquesMokepon = `
+  <button id=${ataques.id} class="boton-de-ataque">${ataques.name}</button>
+  `
+  containerAttacks.innerHTML += ataquesMokepon;
+  })
+
+  fireAttackButtom = document.getElementById("btn-Fuego");
+  waterAttackButtom = document.getElementById("btn-Agua");
+  earthAttackButtom = document.getElementById("btn-Tierra");
+
+  // Attack actions
+  fireAttackButtom.addEventListener("click", attackFuego);
+  waterAttackButtom.addEventListener("click", attackAgua);
+  earthAttackButtom.addEventListener("click", attackTierra);
 }
 
 function gameReset() {
