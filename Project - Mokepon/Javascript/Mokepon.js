@@ -50,11 +50,11 @@ let inputCharmander;
 let inputPickle;
 
 let ataqueJugador = [];
-let ataqueEnemigo;
+let ataqueEnemigo = [];
 
-const fireAttack = "FUEGO 🔥";
-const waterAttack = "AGUA 🌊";
-const earthAttack = "TIERRA 🌍";
+const fireAttack = "Fuego 🔥";
+const waterAttack = "Agua 🌊";
+const earthAttack = "Tierra 🌍";
 
 let vidasJugador = 3;
 let vidasEnemigo = 3;
@@ -63,6 +63,7 @@ let mokeponOption = 0;
 
 let mascotaJugador;
 let ataquesMokepon;
+let ataquesMokeponEnemigo
 
 // Buttoms
 let fireAttackButtom;
@@ -74,6 +75,7 @@ let botones = [];
 // Arrays
 
 let Mokepones = [];
+
 
 /* Creating a class as well as an object named "Mokepon" */
 
@@ -329,15 +331,16 @@ function combatResult(string, stringTwo) {
 // This next function will get the randomAttack from enemy right after clicking the "Fire, water or earth" buttom
 
 function getEnemyAttack() {
-  let typeAttack = random(1, 3);
+  let typeAttack = random(0, ataquesMokeponEnemigo.length - 1);
 
-  if (typeAttack == 1) {
-    ataqueEnemigo = fireAttack;
-  } else if (typeAttack == 2) {
-    ataqueEnemigo = waterAttack;
+  if (typeAttack == 0 || typeAttack == 1) {
+    ataqueEnemigo.push(fireAttack);
+  } else if (typeAttack == 2 || typeAttack == 4) {
+    ataqueEnemigo.push(waterAttack);
   } else {
-    ataqueEnemigo = earthAttack;
+    ataqueEnemigo.push(earthAttack);
   }
+  console.log(ataqueEnemigo)
 }
 
 // This function will get the attack and changing the HTML's DOM to the corresponding attack
@@ -386,6 +389,7 @@ function seleccionarMascotaJugador() {
   let randomSelect = random(0, Mokepones.length - 1);
 
   selectMascotaEnemigo.innerHTML = Mokepones[randomSelect].name;
+  ataquesMokeponEnemigo = Mokepones[randomSelect].ataques;
   attackSequency()
 
   if (inputPikachu.checked) {
@@ -480,6 +484,7 @@ function attackSequency() {
         console.log(ataqueJugador)
         boton.style.background = '#112f53';
       }
+      getEnemyAttack()
     });
   });
 }
