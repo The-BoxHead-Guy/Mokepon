@@ -63,7 +63,9 @@ let mokeponOption = 0;
 
 let mascotaJugador;
 let ataquesMokepon;
-let ataquesMokeponEnemigo
+let ataquesMokeponEnemigo;
+let indexAtauqeJugador 
+let indexAtaqueEnemigo
 
 // Buttoms
 let fireAttackButtom;
@@ -75,7 +77,6 @@ let botones = [];
 // Arrays
 
 let Mokepones = [];
-
 
 /* Creating a class as well as an object named "Mokepon" */
 
@@ -219,8 +220,8 @@ function createMessage() {
     ", el enemigo usó un ataque de " +
     ataqueEnemigo; */
 
-  attackPlayer.innerHTML = ataqueJugador;
-  attackEnemy.innerHTML = ataqueEnemigo;
+  attackPlayer.innerHTML = indexAtauqeJugador;
+  attackEnemy.innerHTML = indexAtaqueEnemigo;
 
   newP2.innerHTML = combatResult(ataqueJugador, ataqueEnemigo);
 
@@ -292,37 +293,22 @@ function endBattle() {
   }
 }
 
+function indexBothOpponents (jugador, enemigo) {
+  indexAtauqeJugador = ataqueJugador[jugador]
+  indexAtaqueEnemigo = ataqueEnemigo[enemigo]
+}
+
 // Deciding the result of the match
 
 function combatResult(string, stringTwo) {
-  /* if (string == stringTwo) {
-        return '¡EMPATE!'
-    } else if (string == fireAttack && stringTwo == waterAttack) {
-        return '¡GANASTE!'
-    } else if (string == waterAttack && stringTwo == earthAttack) {
-        return '¡GANASTE!'
-    } else if (string == earthAttack && stringTwo == fireAttack) {
-        return '¡GANASTE!'
-    } else {
-        return '¡PERDISTE!'
-    } */
+  // Generating the loop to set true or false actions
 
-  // improving my code
-
-  if (
-    (string == fireAttack && stringTwo == waterAttack) ||
-    (string == waterAttack && stringTwo == earthAttack) ||
-    (string == earthAttack && stringTwo == fireAttack)
-  ) {
-    vidasEnemigo--;
-    lifePetEnemy();
-    return "¡GANASTE!";
-  } else if (string == stringTwo) {
-    return "¡EMPATE!";
-  } else {
-    vidasJugador--;
-    lifePetPlayer();
-    return "¡PERDISTE!";
+  for (let index = 0; index < ataqueJugador.length; index++) {
+    if (ataqueJugador[index] === ataqueEnemigo[index]) {
+      createMessage()
+      indexBothOpponents(index, index);
+      return '¡Empate!'
+    }
   }
 }
 
@@ -334,13 +320,22 @@ function getEnemyAttack() {
   let typeAttack = random(0, ataquesMokeponEnemigo.length - 1);
 
   if (typeAttack == 0 || typeAttack == 1) {
-    ataqueEnemigo.push(fireAttack);
+    ataqueEnemigo.push('FUEGO');
   } else if (typeAttack == 2 || typeAttack == 4) {
-    ataqueEnemigo.push(waterAttack);
+    ataqueEnemigo.push('AGUA');
   } else {
-    ataqueEnemigo.push(earthAttack);
+    ataqueEnemigo.push('EARTH');
   }
-  console.log(ataqueEnemigo)
+  console.log(ataqueEnemigo);
+  beginFight();
+}
+
+// Waiting for the selection of the attacks and then display the battle
+function beginFight() {
+  // After the five attacks have been selected
+  if (ataqueJugador.length === 5) {
+    createMessage();
+  }
 }
 
 // This function will get the attack and changing the HTML's DOM to the corresponding attack
@@ -390,7 +385,7 @@ function seleccionarMascotaJugador() {
 
   selectMascotaEnemigo.innerHTML = Mokepones[randomSelect].name;
   ataquesMokeponEnemigo = Mokepones[randomSelect].ataques;
-  attackSequency()
+  attackSequency();
 
   if (inputPikachu.checked) {
     selectMascotaJugador.innerHTML = inputPikachu.id;
@@ -456,7 +451,7 @@ function mostrarAtaques(ataques) {
 
   // Select all the elements which have a class, this works for the same class in several functions
   botones = document.querySelectorAll(".btnAtaque");
-  attackSequency(botones)
+  attackSequency(botones);
 
   // Attack actions
   /* fireAttackButtom.addEventListener("click", attackFuego);
@@ -470,21 +465,21 @@ function attackSequency() {
     boton.addEventListener("click", (e) => {
       // console.log(e)
 
-      if (e.target.textContent === 'Agua 🌊') {
+      if (e.target.textContent === "Agua 🌊") {
         // console.log('Selected')
-        ataqueJugador.push('AGUA')
-        console.log(ataqueJugador)
-        boton.style.background = '#112f53';
-      } else if (e.target.textContent === 'Fuego 🔥') {
-        ataqueJugador.push('FUEGO')
-        console.log(ataqueJugador)
-        boton.style.background = '#112f53';
+        ataqueJugador.push("AGUA");
+        console.log(ataqueJugador);
+        boton.style.background = "#112f53";
+      } else if (e.target.textContent === "Fuego 🔥") {
+        ataqueJugador.push("FUEGO");
+        console.log(ataqueJugador);
+        boton.style.background = "#112f53";
       } else {
-        ataqueJugador.push('EARTH')
-        console.log(ataqueJugador)
-        boton.style.background = '#112f53';
+        ataqueJugador.push("EARTH");
+        console.log(ataqueJugador);
+        boton.style.background = "#112f53";
       }
-      getEnemyAttack()
+      getEnemyAttack();
     });
   });
 }
