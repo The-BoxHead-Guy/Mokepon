@@ -1,76 +1,8 @@
-/* The whole game 
-
-
-#Game {
-    background-color: rgb(108, 175, 115);
-    padding: 10px;
-    border: 5px solid rgb(47, 255, 78);
-    margin: 10px;
-}
-
-h1 {
-    color: #75ff6e;
-}
-
-#title {
-    background-color: #50166e;
-    color:#ffef08;
-    height: 38px;
-    border: solid 1px yellow;
-    padding: 10px;
-    margin: 10px;
-    justify-content: center;
-    display: flex;
-}
-
-section {
-    text-align: center;
-}
-
-.pet-title {
-    color: #fff019;
-    text-align: center;
-    display: block;
-}
-
-#Seleccionar-Mascota {
-    display: block;
-}
-
-#pet-interface {
-    color: rgb(222, 238, 39);
-    background-color: rgb(67, 34, 87);
-    width: auto;
-    height: auto;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items:center;
-    padding: 10px;
-    border: #ffef08 2px solid;
-    box-sizing: border-box;
-    margin: 10px;
-}
-
- Manipulating the labels 
-
-label {
-    width: 100px;
-    height: 100px;
-    background-color: rgb(87, 27, 84);
-    padding: 10px;
-    box-sizing: border-box;
-    margin: 10px;
-    border: 1px solid rgb(248, 255, 105);
-}
-
-*/
-
-@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap");
 
 body {
   background: #ccd6a6;
-  font-family: 'Fredoka One', cursive;
+  font-family: "Fredoka One", cursive;
 }
 
 #Seleccionar-Mascota {
@@ -117,6 +49,12 @@ body {
     flex-direction: column;
     gap: 10px;
   }
+
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 }
 
 #pet-interface img {
@@ -125,32 +63,36 @@ body {
 }
 
 #pet-interface label {
-  margin: 10px;
+  margin: 5px;
   display: flex;
   align-items: center;
   color: #5d7055;
   background-color: #dae2b6;
   border-radius: 15px;
-  width: 200px;
-  height: 111px;
+  width: 225px;
+  height: 110px;
   justify-content: space-evenly;
 }
 
-input:hover + #pet1, input:hover + #pet2, input:hover + #pet3 {
-  background-color: #FAAB78;
-  color: #FFFBAC;
+input:hover + #pet1,
+input:hover + #pet2,
+input:hover + #pet3 {
+  background-color: #faab78;
+  color: #fffbac;
   cursor: pointer;
 }
 
-input:checked + #pet1, input:checked + #pet2, input:checked + #pet3 {
-  background-color: #FAAB78;
-  color: #FFFBAC;
+input:checked + #pet1,
+input:checked + #pet2,
+input:checked + #pet3 {
+  background-color: #faab78;
+  color: #fffbac;
 }
 
 #Select-Mascota {
   border: none;
   border-radius: 20px;
-  font-family: 'Fredoka One', cursive;
+  font-family: "Fredoka One", cursive;
   width: 200px;
   height: 45px;
   padding: 10px;
@@ -160,8 +102,8 @@ input:checked + #pet1, input:checked + #pet2, input:checked + #pet3 {
 }
 
 #Select-Mascota:hover {
-  background-color: #FAAB78;
-  color: #FFFBAC;
+  background-color: #faab78;
+  color: #fffbac;
   cursor: pointer;
 }
 
@@ -226,12 +168,12 @@ input {
   margin: 5px;
   width: 144px;
   height: 44px;
-  font-family: 'Fredoka One', cursive;
+  font-family: "Fredoka One", cursive;
   color: #5d7055;
   font-size: 18px;
 }
 
-.battle-result:hover button{
+.battle-result:hover button {
   background-color: #767d5e;
   color: white;
   cursor: pointer;
