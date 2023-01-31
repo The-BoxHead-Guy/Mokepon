@@ -1,41 +1,10 @@
+/* The imported font */
 @import url("https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap");
 
+/* Applying the font */
 body {
   background: #ccd6a6;
   font-family: "Fredoka One", cursive;
-}
-
-#Seleccionar-Mascota {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-}
-
-.Attack-selection {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-}
-
-#title {
-  display: flex;
-  color: #787f60;
-  justify-content: center;
-}
-
-.pet-title {
-  color: #787f60;
-}
-
-#pet-interface {
-  display: flex;
-  gap: 10px;
-}
-
-#containerCards {
-  display: flex;
 }
 
 /* Responsive design */
@@ -57,6 +26,35 @@ body {
   }
 }
 
+/* General parameters */
+input {
+  display: none;
+}
+
+/* 1st section */
+#Seleccionar-Mascota {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+#title {
+  display: flex;
+  color: #787f60;
+  justify-content: center;
+}
+
+.pet-title {
+  color: #787f60;
+}
+
+/* Pet UI interface */
+#pet-interface {
+  display: flex;
+  gap: 10px;
+}
+
 #pet-interface img {
   width: 90px;
   margin-left: 10px;
@@ -74,6 +72,11 @@ body {
   justify-content: space-evenly;
 }
 
+/* Character cards presentation */
+#containerCards {
+  display: flex;
+}
+
 input:hover + #pet1,
 input:hover + #pet2,
 input:hover + #pet3 {
@@ -89,6 +92,7 @@ input:checked + #pet3 {
   color: #fffbac;
 }
 
+/* Selecting the pet */
 #Select-Mascota {
   border: none;
   border-radius: 20px;
@@ -107,18 +111,14 @@ input:checked + #pet3 {
   cursor: pointer;
 }
 
-input {
-  display: none;
-}
-
 /* Second block */
-
 #Seleccionar-Ataque {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+/* Attack buttons */
 .boton-de-ataque {
   border-radius: 20px;
   box-sizing: border-box;
@@ -128,8 +128,6 @@ input {
   margin-right: 10px;
   padding: 10px;
 }
-
-/* Buttons */
 
 #btn-Fuego {
   background-color: hsl(0, 75%, 49%);
@@ -146,8 +144,22 @@ input {
   color: white;
 }
 
-/* message display */
+/* Adding swag to the button */
+#btn-Fuego:hover{
+  background-color: hsl(0, 92%, 60%);
+  cursor: pointer;
+}
 
+#btn-Agua:hover{
+  background-color: hsl(240, 85%, 62%);
+  cursor: pointer;
+}
+#btn-Tierra:hover{
+  background-color: hsl(120, 79%, 46%);
+  cursor: pointer;
+}
+
+/* message display */
 .battle-result {
   display: flex;
   flex-direction: column;
@@ -179,6 +191,7 @@ input {
   cursor: pointer;
 }
 
+/* Result Message */
 .Result {
   display: flex;
   flex-direction: column;
@@ -191,6 +204,7 @@ input {
   color: #767d5e;
 }
 
+/* Message Container */
 #pet-messages {
   display: grid;
   grid-template-columns: 50% 50%;
@@ -201,12 +215,12 @@ input {
   width: 400px;
 }
 
-.display-result {
+.display-messages {
   margin: 10px;
   text-align: center;
 }
 
-.display-messages {
+.display-result {
   margin: 10px;
   text-align: center;
 }
