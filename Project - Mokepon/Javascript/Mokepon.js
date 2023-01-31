@@ -236,7 +236,6 @@ function createMessage() {
   // Showing the text as well as the element
 
   attackPlayerMessage.appendChild(attackPlayer);
-
   attackEnemyMessage.appendChild(attackEnemy);
 
   endBattle();
@@ -305,7 +304,6 @@ function combatResult(string, stringTwo) {
 
   for (let index = 0; index < ataqueJugador.length; index++) {
     if (ataqueJugador[index] === ataqueEnemigo[index]) {
-      createMessage()
       indexBothOpponents(index, index);
       return '¡Empate!'
     }
@@ -470,14 +468,17 @@ function attackSequency() {
         ataqueJugador.push("AGUA");
         console.log(ataqueJugador);
         boton.style.background = "#112f53";
+        boton.disabled = true
       } else if (e.target.textContent === "Fuego 🔥") {
         ataqueJugador.push("FUEGO");
         console.log(ataqueJugador);
         boton.style.background = "#112f53";
+        boton.disabled = true
       } else {
         ataqueJugador.push("EARTH");
         console.log(ataqueJugador);
         boton.style.background = "#112f53";
+        boton.disabled = true
       }
       getEnemyAttack();
     });
