@@ -36,6 +36,11 @@ const showMessage = document.getElementById("Result");
 const containerCards = document.getElementById("containerCards");
 const containerAttacks = document.getElementById("containerAttacks");
 
+// Canvas
+const sectionVerMapa = document.getElementById("ver-mapa");
+const mapa = document.getElementById("mapa");
+let lienzo = mapa.getContext("2d");
+
 // Attacks
 const fireAttack = "Fuego 🔥";
 const waterAttack = "Agua 🌊";
@@ -55,8 +60,8 @@ let attackMessageEnemy;
 // Players lifes
 let vidasJugador = 3;
 let vidasEnemigo = 3;
-let victoriesPlayer = 0
-let victoriesEnemy = 0
+let victoriesPlayer = 0;
+let victoriesEnemy = 0;
 
 // Variable to save HTML changes of the pet
 let mokeponOption = 0;
@@ -156,6 +161,9 @@ function beginGame() {
   hiddenSectionReset.style.display = "none";
   hiddenSectionPetMessages.style.display = "none";
 
+  // canva
+  sectionVerMapa.style.display = "none";
+
   // Iterating the process
   Mokepones.forEach((Mokepon) => {
     mokeponOption = `
@@ -184,6 +192,11 @@ function seleccionarMascotaJugador() {
 
   // The next line of code defines the array of the Mokepons attacks
   ataquesMokeponEnemigo = Mokepones[randomSelect].ataques;
+
+  let imagenPikachu = new Image();
+    imagenPikachu.src = pikachu.photo;
+    lienzo.drawImage(imagenPikachu, 20, 40, 100, 100);
+    lienzo.fillRect(5, 15, 20, 40); // Creating a rectangle
 
   // Player selection
   if (inputPikachu.checked) {
@@ -216,7 +229,8 @@ function seleccionarMascotaJugador() {
   function displaySectionPetMessages() {
     showSectionPetMessages.style.display = "grid";
     hidePetSection.style.display = "none";
-    showAttackSection.style.display = "flex";
+    // showAttackSection.style.display = "flex";
+    sectionVerMapa.style.display = "flex";
   }
 }
 
@@ -293,8 +307,8 @@ function getEnemyAttack(typeAttack) {
     ataqueEnemigo.push("AGUA");
   }
   if (ataqueJugador.length === 5) {
-    console.log(ataqueJugador.length)
-    beginFight()
+    console.log(ataqueJugador.length);
+    beginFight();
   }
 }
 
@@ -312,7 +326,7 @@ function beginFight() {
     ) {
       messageResult = "¡GANASTE!";
       bothEnemyIndex(index, index);
-      victoriesPlayer++
+      victoriesPlayer++;
       petPLayerLife.innerHTML = victoriesPlayer;
     } else if (
       ataqueJugador[index] === "AGUA" &&
@@ -320,7 +334,7 @@ function beginFight() {
     ) {
       messageResult = "¡GANASTE!";
       bothEnemyIndex(index, index);
-      victoriesPlayer++
+      victoriesPlayer++;
       petPLayerLife.innerHTML = victoriesPlayer;
     } else if (
       ataqueJugador[index] === "TIERRA" &&
@@ -328,12 +342,12 @@ function beginFight() {
     ) {
       messageResult = "GANASTE!";
       bothEnemyIndex(index, index);
-      victoriesPlayer++
+      victoriesPlayer++;
       petPLayerLife.innerHTML = victoriesPlayer;
     } else {
       messageResult = "¡PERDISTE!";
       bothEnemyIndex(index, index);
-      victoriesEnemy++
+      victoriesEnemy++;
       petEnemyLife.innerHTML = victoriesEnemy;
     }
     // After the five attacks have been selected

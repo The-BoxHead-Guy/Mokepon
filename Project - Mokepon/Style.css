@@ -39,6 +39,17 @@ input {
   align-items: center;
 }
 
+/* Canva */
+#ver-mapa {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#mapa {
+  border: 2px solid white;
+}
+
 #title {
   display: flex;
   color: #787f60;
