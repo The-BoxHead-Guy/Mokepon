@@ -1,8 +1,3 @@
-// After the webpage charges, the JS document will take the next event as a result of its verification of the "Window.addEventListener('Load", beginGame);
-
-// Preparing variables to be re-used later
-
-// Section - GetElementById
 // Selecting the pet
 const buttonPetPlayer = document.getElementById("Select-Mascota");
 
@@ -22,6 +17,8 @@ const hiddenSectionPetMessages = document.getElementById("pet-messages");
 // Changing the DOM
 const selectMascotaJugador = document.getElementById("select-mascota");
 const selectMascotaEnemigo = document.getElementById("select-mascota-enemigo");
+const attackPlayerMessage = document.getElementById("attack-player");
+const attackEnemyMessage = document.getElementById("attack-enemy");
 
 // Player & enemy lifes
 const petPLayerLife = document.getElementById("vidas-jugador");
@@ -32,89 +29,92 @@ const spanPlayerAttack = document.getElementById("player-attack");
 const spanEnemyAttack = document.getElementById("enemy-attack");
 const hidePetSection = document.getElementById("Seleccionar-Mascota");
 const showAttackSection = document.getElementById("Seleccionar-Ataque");
-const sectionPetMessage = document.getElementById("none-case");
 const showSectionPetMessages = document.getElementById("pet-messages");
 const showMessage = document.getElementById("Result");
 
-// Attack messages
-const attackPlayerMessage = document.getElementById("attack-player");
-const attackEnemyMessage = document.getElementById("attack-enemy");
-
-// Global Variables
+// Container Cards & attacks
 const containerCards = document.getElementById("containerCards");
 const containerAttacks = document.getElementById("containerAttacks");
+
+// Attacks
+const fireAttack = "Fuego 🔥";
+const waterAttack = "Agua 🌊";
+const earthAttack = "Tierra 🌍";
 
 // Saving player pets variables
 let inputPikachu;
 let inputCharmander;
 let inputPickle;
 
+// Attacks arrays
 let ataqueJugador = [];
 let ataqueEnemigo = [];
+let attackMessagePlayer;
+let attackMessageEnemy;
 
-const fireAttack = "Fuego 🔥";
-const waterAttack = "Agua 🌊";
-const earthAttack = "Tierra 🌍";
-
+// Players lifes
 let vidasJugador = 3;
 let vidasEnemigo = 3;
+let victoriesPlayer = 0
+let victoriesEnemy = 0
 
+// Variable to save HTML changes of the pet
 let mokeponOption = 0;
 
+// Pet information
 let mascotaJugador;
 let ataquesMokepon;
 let ataquesMokeponEnemigo;
-let indexAtauqeJugador 
-let indexAtaqueEnemigo
+let indexAtaqueJugador = [];
+let indexAtaqueEnemigo = [];
+let attackResults;
 
 // Buttoms
 let fireAttackButtom;
 let waterAttackButtom;
 let earthAttackButtom;
-
 let botones = [];
 
 // Arrays
-
 let Mokepones = [];
 
-/* Creating a class as well as an object named "Mokepon" */
+// Enemy's chose
+let randomSelect;
+let typeAttack;
 
+/* Creating a class as well as an object named "Mokepon" */
 class Mokepon {
-  constructor(name, photo, vidas, pet) {
+  constructor(name, photo, victories, pet) {
     this.name = name;
     this.photo = photo;
-    this.vidas = vidas;
+    this.victories = victories;
     this.pet = pet;
     this.ataques = [];
   }
 }
 
 /* Creating the objects (Mokepons) */
-
 let pikachu = new Mokepon(
   "Pikachu",
   "./assets/mokepons_mokepon_capipepo_attack.png",
-  3,
+  0,
   "pet1"
 );
 let charmander = new Mokepon(
   "Charmander",
   "./assets/mokepons_mokepon_hipodoge_attack.png",
-  3,
+  0,
   "pet2"
 );
 let pickle = new Mokepon(
   "Pickle",
   "./assets/mokepons_mokepon_ratigueya_attack.png",
-  3,
+  0,
   "pet3"
 );
 
 /* Then, we need to push the information into an array */
-
 Mokepones.push(pikachu, charmander, pickle);
-/* console.log(Mokepones.length); */
 
 // Using "push" to generate the attacks
 pikachu.ataques.push(
@@ -129,7 +129,7 @@ charmander.ataques.push(
   { name: "Fuego 🔥", id: "btn-Fuego" },
   { name: "Fuego 🔥", id: "btn-Fuego" },
   { name: "Tierra 🌍", id: "btn-Tierra" },
-  { name: "Agua 🌊", id: "btn-Fuego" }
+  { name: "Agua 🌊", id: "btn-Agua" }
 );
 pickle.ataques.push(
   { name: "Tierra 🌍", id: "btn-Tierra" },
@@ -144,9 +144,6 @@ pickle.ataques.push(
 // Beginning the GAME
 
 function beginGame() {
-  // --------------------------------------------------------------------
-  // Event listeners
-
   // Pet Actions
   buttonPetPlayer.addEventListener("click", seleccionarMascotaJugador);
 
@@ -180,60 +177,190 @@ function beginGame() {
   });
 }
 
-//--------------------------------------------------------
+function seleccionarMascotaJugador() {
+  // Saving Enemy's pet variable as well as choosing it.
+  randomSelect = random(0, Mokepones.length - 1);
+  selectMascotaEnemigo.innerHTML = Mokepones[randomSelect].name;
 
-// After triggering fire, water and earth buttom
+  // The next line of code defines the array of the Mokepons attacks
+  ataquesMokeponEnemigo = Mokepones[randomSelect].ataques;
 
-/* function attackFuego() {
-  ataqueJugador = fireAttack;
-  getEnemyAttack();
-  createMessage();
+  // Player selection
+  if (inputPikachu.checked) {
+    selectMascotaJugador.innerHTML = inputPikachu.id;
+    mascotaJugador = inputPikachu.id;
+
+    // petEnemySelect();
+    displaySectionPetMessages();
+  } else if (inputCharmander.checked) {
+    selectMascotaJugador.innerHTML = inputCharmander.id;
+    mascotaJugador = inputCharmander.id;
+
+    // petEnemySelect();
+    displaySectionPetMessages();
+  } else if (inputPickle.checked) {
+    selectMascotaJugador.innerHTML = inputPickle.id;
+    mascotaJugador = inputPickle.id;
+
+    // petEnemySelect();
+    displaySectionPetMessages();
+  } else {
+    alert("Elige una mascota para poder jugar");
+    return 0;
+  }
+
+  // local functions
+  extraerAtaques(mascotaJugador);
+
+  // Messages section activation and hiding.
+  function displaySectionPetMessages() {
+    showSectionPetMessages.style.display = "grid";
+    hidePetSection.style.display = "none";
+    showAttackSection.style.display = "flex";
+  }
 }
 
-function attackAgua() {
-  ataqueJugador = waterAttack;
-  getEnemyAttack();
-  createMessage();
+// The function which it will work as the random select of our enemy
+function random(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function attackTierra() {
-  ataqueJugador = earthAttack;
-  getEnemyAttack();
-  createMessage();
-} */
+function extraerAtaques(mascotaJugador) {
+  // Local variable
+  let ataques;
+
+  // Loop to get the attacks of the respective character
+  for (let i = 0; i < Mokepones.length; i++) {
+    if (
+      mascotaJugador === Mokepones[i].name /* Pikachu; Charmander; Pickle */
+    ) {
+      ataques = Mokepones[i].ataques;
+    }
+  }
+  // After loop ends, the next function starts
+  mostrarAtaques(ataques);
+}
+
+function mostrarAtaques(ataques) {
+  ataques.forEach((ataques) => {
+    ataquesMokepon = `
+    <button id=${ataques.id} class="boton-de-ataque btnAtaque">${ataques.name}</button>
+    `;
+    containerAttacks.innerHTML += ataquesMokepon;
+  });
+
+  fireAttackButtom = document.getElementById("btn-Fuego");
+  waterAttackButtom = document.getElementById("btn-Agua");
+  earthAttackButtom = document.getElementById("btn-Tierra");
+
+  // Select all the elements which have a class, this works for the same class in several functions
+  botones = document.querySelectorAll(".btnAtaque");
+  attackSequency(botones);
+}
+
+// Attack sequency
+function attackSequency(botones) {
+  botones.forEach((boton) => {
+    boton.addEventListener("click", (e) => {
+      if (e.target.textContent === "Agua 🌊") {
+        ataqueJugador.push("AGUA");
+        boton.style.background = "#848161";
+        boton.disabled = true;
+      } else if (e.target.textContent === "Fuego 🔥") {
+        ataqueJugador.push("FUEGO");
+        boton.style.background = "#848161";
+        boton.disabled = true;
+      } else {
+        ataqueJugador.push("TIERRA");
+        boton.style.background = "#848161";
+        boton.disabled = true;
+      }
+      // Getting enemy's attack
+      getEnemyAttack(
+        (typeAttack = random(0, ataquesMokeponEnemigo.length - 1))
+      );
+    });
+  });
+}
+
+// This next function will get the randomAttack from enemy right after clicking the "Fire, water or earth" buttom
+function getEnemyAttack(typeAttack) {
+  if (typeAttack === 0 || typeAttack === 1) {
+    ataqueEnemigo.push("FUEGO");
+  } else if (typeAttack === 3) {
+    ataqueEnemigo.push("TIERRA");
+  } else {
+    ataqueEnemigo.push("AGUA");
+  }
+  if (ataqueJugador.length === 5) {
+    console.log(ataqueJugador.length)
+    beginFight()
+  }
+}
+
+// Waiting for the selection of the attacks and then display the battle
+function beginFight() {
+  let messageResult = "";
+
+  for (let index = 0; index < ataqueJugador.length; index++) {
+    if (ataqueJugador[index] === ataqueEnemigo[index]) {
+      messageResult = "¡EMPATE!";
+      bothEnemyIndex(index, index);
+    } else if (
+      ataqueJugador[index] === "FUEGO" &&
+      ataqueEnemigo[index] === "AGUA"
+    ) {
+      messageResult = "¡GANASTE!";
+      bothEnemyIndex(index, index);
+      victoriesPlayer++
+      petPLayerLife.innerHTML = victoriesPlayer;
+    } else if (
+      ataqueJugador[index] === "AGUA" &&
+      ataqueEnemigo[index] === "TIERRA"
+    ) {
+      messageResult = "¡GANASTE!";
+      bothEnemyIndex(index, index);
+      victoriesPlayer++
+      petPLayerLife.innerHTML = victoriesPlayer;
+    } else if (
+      ataqueJugador[index] === "TIERRA" &&
+      ataqueEnemigo[index] === "FUEGO"
+    ) {
+      messageResult = "GANASTE!";
+      bothEnemyIndex(index, index);
+      victoriesPlayer++
+      petPLayerLife.innerHTML = victoriesPlayer;
+    } else {
+      messageResult = "¡PERDISTE!";
+      bothEnemyIndex(index, index);
+      victoriesEnemy++
+      petEnemyLife.innerHTML = victoriesEnemy;
+    }
+    // After the five attacks have been selected
+    if (ataqueJugador.length === 5) {
+      createMessage(messageResult);
+    }
+  }
+}
+
+function bothEnemyIndex(jugador, enemigo) {
+  indexAtaqueJugador = ataqueJugador[jugador];
+  indexAtaqueEnemigo = ataqueEnemigo[enemigo];
+}
 
 //--------------------------------------------------------
 // Here will be the function to create the newMessage that will be shown in the section "Messages"
 
-function createMessage() {
+function createMessage(messageResult) {
   // let newP = document.createElement("p");
   let attackPlayer = document.createElement("p");
   let attackEnemy = document.createElement("p");
-  /* let newP2 = document.createElement("p"); */
-  let newP2 = document.getElementById("Result");
+  // let newP2 = document.getElementById("Result");
 
-  // Method 1 --------------------------------------
-
-  /* newP.innerHTML =
-    "Tu mascota usó un ataque de " +
-    ataqueJugador +
-    ", el enemigo usó un ataque de " +
-    ataqueEnemigo; */
-
-  attackPlayer.innerHTML = indexAtauqeJugador;
+  attackPlayer.innerHTML = indexAtaqueJugador;
   attackEnemy.innerHTML = indexAtaqueEnemigo;
 
-  newP2.innerHTML = combatResult(ataqueJugador, ataqueEnemigo);
-
-  // Method 2 --------------------------------------
-
-  /* let newContent = document.createTextNode('Tu mascota usó un ataque de ' + ataqueJugador + ', el enemigo usó un ataque de ' + ataqueEnemigo);
-
-    newP.appendChild(newContent) */
-
-  // ----------------------------------------------
-
-  // Showing the text as well as the element
+  // newP2.innerHTML = messageResult;
 
   attackPlayerMessage.appendChild(attackPlayer);
   attackEnemyMessage.appendChild(attackEnemy);
@@ -241,14 +368,26 @@ function createMessage() {
   endBattle();
 }
 
+function endBattle() {
+  const resultMessage = document.getElementById("Result");
+
+  if (victoriesPlayer === victoriesEnemy) {
+    resultMessage.innerHTML = "¡Ha habido un empate!";
+  } else if (victoriesPlayer > victoriesEnemy) {
+    resultMessage.innerHTML = "¡Has ganado este encuentro!";
+  } else {
+    resultMessage.innerHTML = "Has perdido... ¡Sigue mejorando!";
+  }
+}
+
 // Function which is going to minus the life of the pets
 
 function lifePetPlayer() {
-  petPLayerLife.innerHTML = vidasJugador;
+  petPLayerLife.innerHTML = victoriesPlayer;
 }
 
 function lifePetEnemy() {
-  petEnemyLife.innerHTML = vidasEnemigo;
+  petEnemyLife.innerHTML = victoriesEnemy;
 }
 
 // Reset Buttom
@@ -272,221 +411,9 @@ function attackButtomDisabled() {
 
 // Deciding the winner
 
-function endBattle() {
-  // If enemy wins
-  if (vidasJugador == 0) {
-    // alert("Has perdido, mejor suerte para la próxima 😒");
-
-    showMessage.innerHTML = "Has perdido, mejor suerte para la próxima";
-
-    battleEnded();
-    attackButtomDisabled();
-    // If player wins
-  } else if (vidasEnemigo == 0) {
-    // alert("El jugador ha ganado, ¡Enhorabuena! 😉");
-
-    showMessage.innerHTML = "¡Has ganado! Enhorabuena!";
-
-    battleEnded();
-    attackButtomDisabled();
-  }
-}
-
-function indexBothOpponents (jugador, enemigo) {
-  indexAtauqeJugador = ataqueJugador[jugador]
-  indexAtaqueEnemigo = ataqueEnemigo[enemigo]
-}
-
-// Deciding the result of the match
-
-function combatResult(string, stringTwo) {
-  // Generating the loop to set true or false actions
-
-  for (let index = 0; index < ataqueJugador.length; index++) {
-    if (ataqueJugador[index] === ataqueEnemigo[index]) {
-      indexBothOpponents(index, index);
-      return '¡Empate!'
-    }
-  }
-}
-
-//--------------------------------------------------------
-
-// This next function will get the randomAttack from enemy right after clicking the "Fire, water or earth" buttom
-
-function getEnemyAttack() {
-  let typeAttack = random(0, ataquesMokeponEnemigo.length - 1);
-
-  if (typeAttack == 0 || typeAttack == 1) {
-    ataqueEnemigo.push('FUEGO');
-  } else if (typeAttack == 2 || typeAttack == 4) {
-    ataqueEnemigo.push('AGUA');
-  } else {
-    ataqueEnemigo.push('EARTH');
-  }
-  console.log(ataqueEnemigo);
-  beginFight();
-}
-
-// Waiting for the selection of the attacks and then display the battle
-function beginFight() {
-  // After the five attacks have been selected
-  if (ataqueJugador.length === 5) {
-    createMessage();
-  }
-}
-
-// This function will get the attack and changing the HTML's DOM to the corresponding attack
-
-function getPlayerEnemyAttackText() {
-  {
-    spanPlayerAttack.innerHTML = ataqueJugador;
-    spanEnemyAttack.innerHTML = ataqueEnemigo;
-  }
-}
-
-//--------------------------------------------------------
-
-// The function which it will work as the random select of our enemy
-
-function random(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-// Creating dissapearing or appearing Messages
-
-function sectionPetSelect() {
-  hidePetSection.style.display = "none";
-}
-
-function sectionAttackSelect() {
-  showAttackSection.style.display = "flex";
-}
-
-// In here we're going to create the functions for the buttons
-
-function seleccionarMascotaJugador() {
-  function petNumberChange() {
-    if (randomSelect == 0) {
-      selectMascotaEnemigo.innerHTML = "Pikachu";
-    } else if (randomSelect == 1) {
-      selectMascotaEnemigo.innerHTML = "Charmander";
-    } else if (randomSelect == 2) {
-      selectMascotaEnemigo.innerHTML = "Pickle";
-    } else {
-      selectMascotaEnemigo.innerHTML = "Aún sin seleccionar";
-    }
-  }
-
-  // Saving Enemy's pet variable
-  let randomSelect = random(0, Mokepones.length - 1);
-
-  selectMascotaEnemigo.innerHTML = Mokepones[randomSelect].name;
-  ataquesMokeponEnemigo = Mokepones[randomSelect].ataques;
-  attackSequency();
-
-  if (inputPikachu.checked) {
-    selectMascotaJugador.innerHTML = inputPikachu.id;
-    mascotaJugador = inputPikachu.id;
-
-    petNumberChange();
-    displaySectionPetMessages();
-    sectionPetSelect();
-    sectionAttackSelect();
-  } else if (inputCharmander.checked) {
-    selectMascotaJugador.innerHTML = inputCharmander.id;
-    mascotaJugador = inputCharmander.id;
-
-    petNumberChange();
-    displaySectionPetMessages();
-    sectionPetSelect();
-    sectionAttackSelect();
-  } else if (inputPickle.checked) {
-    selectMascotaJugador.innerHTML = inputPickle.id;
-    mascotaJugador = inputPickle.id;
-
-    petNumberChange();
-    displaySectionPetMessages();
-    sectionPetSelect();
-    sectionAttackSelect();
-  } else {
-    let noneMessage = document.createElement("p");
-    noneMessage.innerHTML = "Selecciona una mascota para poder avanzar";
-
-    sectionPetMessage.appendChild(noneMessage);
-  }
-
-  // local functions
-
-  extraerAtaques(mascotaJugador);
-
-  function displaySectionPetMessages() {
-    showSectionPetMessages.style.display = "grid";
-  }
-}
-
-function extraerAtaques(mascotaJugador) {
-  let ataques;
-  for (let i = 0; i < Mokepones.length; i++) {
-    if (mascotaJugador === Mokepones[i].name) {
-      ataques = Mokepones[i].ataques;
-    }
-  }
-  mostrarAtaques(ataques);
-}
-
-function mostrarAtaques(ataques) {
-  ataques.forEach((ataques) => {
-    ataquesMokepon = `
-  <button id=${ataques.id} class="boton-de-ataque btnAtaque">${ataques.name}</button>
-  `;
-    containerAttacks.innerHTML += ataquesMokepon;
-  });
-
-  fireAttackButtom = document.getElementById("btn-Fuego");
-  waterAttackButtom = document.getElementById("btn-Agua");
-  earthAttackButtom = document.getElementById("btn-Tierra");
-
-  // Select all the elements which have a class, this works for the same class in several functions
-  botones = document.querySelectorAll(".btnAtaque");
-  attackSequency(botones);
-
-  // Attack actions
-  /* fireAttackButtom.addEventListener("click", attackFuego);
-  waterAttackButtom.addEventListener("click", attackAgua);
-  earthAttackButtom.addEventListener("click", attackTierra); */
-}
-
-// Attack sequency
-function attackSequency() {
-  botones.forEach((boton) => {
-    boton.addEventListener("click", (e) => {
-      // console.log(e)
-
-      if (e.target.textContent === "Agua 🌊") {
-        // console.log('Selected')
-        ataqueJugador.push("AGUA");
-        console.log(ataqueJugador);
-        boton.style.background = "#112f53";
-        boton.disabled = true
-      } else if (e.target.textContent === "Fuego 🔥") {
-        ataqueJugador.push("FUEGO");
-        console.log(ataqueJugador);
-        boton.style.background = "#112f53";
-        boton.disabled = true
-      } else {
-        ataqueJugador.push("EARTH");
-        console.log(ataqueJugador);
-        boton.style.background = "#112f53";
-        boton.disabled = true
-      }
-      getEnemyAttack();
-    });
-  });
-}
-
 function gameReset() {
   location.reload();
 }
 
+/* The game starter. After the webpage charges, the JS document will take the next event as a result of its verification of the "Window.addEventListener('Load", beginGame); */
 window.addEventListener("load", beginGame);
