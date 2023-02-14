@@ -50,6 +50,11 @@ input {
   border: 2px solid white;
 }
 
+.buttonsCanva {
+  display: flex;
+  flex-direction: row;
+}
+
 #title {
   display: flex;
   color: #787f60;

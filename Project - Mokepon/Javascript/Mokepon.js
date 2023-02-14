@@ -40,6 +40,7 @@ const containerAttacks = document.getElementById("containerAttacks");
 const sectionVerMapa = document.getElementById("ver-mapa");
 const mapa = document.getElementById("mapa");
 let lienzo = mapa.getContext("2d");
+let interval
 
 // Attacks
 const fireAttack = "Fuego 🔥";
@@ -95,6 +96,16 @@ class Mokepon {
     this.victories = victories;
     this.pet = pet;
     this.ataques = [];
+
+    // Canva
+    this.x = 20;
+    this.y = 30;
+    this.width = 80;
+    this.height = 80;
+    this.mapaFoto = new Image();
+    this.mapaFoto.src = photo;
+    this.velocidadX = 0;
+    this.velocidadY = 0;
   }
 }
 
@@ -193,10 +204,7 @@ function seleccionarMascotaJugador() {
   // The next line of code defines the array of the Mokepons attacks
   ataquesMokeponEnemigo = Mokepones[randomSelect].ataques;
 
-  let imagenPikachu = new Image();
-    imagenPikachu.src = pikachu.photo;
-    lienzo.drawImage(imagenPikachu, 20, 40, 100, 100);
-    lienzo.fillRect(5, 15, 20, 40); // Creating a rectangle
+  beginMap()
 
   // Player selection
   if (inputPikachu.checked) {
@@ -421,6 +429,67 @@ function attackButtomDisabled() {
   waterAttackButtom.style.display = "none";
 
   earthAttackButtom.style.display = "none";
+}
+
+function beginMap() {
+  // Canva intervals
+  interval = setInterval(pintarPersonaje, 50)
+  pintarPersonaje()
+
+  window.addEventListener('keydown', aPressedKey)
+  window.addEventListener('keyup', stopMovement)
+}
+
+function pintarPersonaje() {
+  pikachu.x = pikachu.x + pikachu.velocidadX
+  pikachu.y = pikachu.y + pikachu.velocidadY
+  
+  lienzo.clearRect(0, 0, mapa.width, mapa.height);
+  lienzo.drawImage(
+    pikachu.mapaFoto,
+    pikachu.x,
+    pikachu.y,
+    pikachu.width,
+    pikachu.height
+  ); // Creating a rectangle
+}
+
+function moverPikachuRight() {
+  pikachu.velocidadX = 5
+}
+
+function moverPikachuLeft() {
+  pikachu.velocidadX = -5
+}
+
+function moverPikachuUp() {
+  pikachu.velocidadY = -5
+}
+
+function moverPikachuDown() {
+  pikachu.velocidadY = 5
+}
+
+function stopMovement() {
+  pikachu.velocidadX = 0
+  pikachu.velocidadY = 0
+}
+
+function aPressedKey(event) {
+  switch (event.key) {
+    case 'ArrowUp':
+      moverPikachuUp()
+      break;
+    case 'ArrowDown':
+      moverPikachuDown()
+      break;
+    case 'ArrowLeft':
+      moverPikachuLeft()
+      break;
+    case 'ArrowRight':
+      moverPikachuRight()
+      break;
+  }
 }
 
 // Deciding the winner

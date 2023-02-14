@@ -26,6 +26,12 @@
     <section id="ver-mapa">
       <h1 class="titulo">Recorre el mapa con tu mascota</h1>
       <canvas id="mapa"></canvas>
+      <div class="buttonsCanva">
+        <button onmouseup="stopMovement()" onmousedown="moverPikachuRight()">RIGHT</button>
+        <button onmouseup="stopMovement()" onmousedown="moverPikachuLeft()">LEFT</button>
+        <button onmouseup="stopMovement()" onmousedown="moverPikachuUp()">UP</button>
+        <button onmouseup="stopMovement()" onmousedown="moverPikachuDown()">DOWN</button>
+      </div>
     </section>
 
     <!-- Attacks choosing interface -->
@@ -56,7 +62,7 @@
           <div class="display-messages">
             <span id="select-mascota"></span><br />
             <span id="vidas-jugador">0</span> victorias
-            
+
             <!-- Player attacks, messages -->
             <div id="attack-player">
               <!-- Messages -->
@@ -65,7 +71,7 @@
           <div class="display-result">
             <span id="select-mascota-enemigo"></span><br />
             <span id="vidas-enemigo">0</span> victorias
-            
+
             <!-- Enemy Attacks, messages -->
             <div id="attack-enemy">
               <!-- Messages -->
