@@ -39,8 +39,11 @@ const containerAttacks = document.getElementById("containerAttacks");
 // Canvas
 const sectionVerMapa = document.getElementById("ver-mapa");
 const mapa = document.getElementById("mapa");
+let myMokepon;
+let mapBackground = new Image();
+mapBackground.src = "./assets/mokemap.png";
 let lienzo = mapa.getContext("2d");
-let interval
+let interval;
 
 // Attacks
 const fireAttack = "Fuego 🔥";
@@ -90,7 +93,7 @@ let typeAttack;
 
 /* Creating a class as well as an object named "Mokepon" */
 class Mokepon {
-  constructor(name, photo, victories, pet) {
+  constructor(name, photo, victories, pet, mapPhoto, x = 10, y = 10) {
     this.name = name;
     this.photo = photo;
     this.victories = victories;
@@ -98,14 +101,18 @@ class Mokepon {
     this.ataques = [];
 
     // Canva
-    this.x = 20;
-    this.y = 30;
+    this.x = x;
+    this.y = y;
     this.width = 80;
     this.height = 80;
-    this.mapaFoto = new Image();
-    this.mapaFoto.src = photo;
+    this.mapPhoto = new Image();
+    this.mapPhoto.src = mapPhoto;
     this.velocidadX = 0;
     this.velocidadY = 0;
+  }
+
+  pintarMokepon() {
+    lienzo.drawImage(this.mapPhoto, this.x, this.y, this.width, this.height);
   }
 }
 
@@ -114,19 +121,49 @@ let pikachu = new Mokepon(
   "Pikachu",
   "./assets/mokepons_mokepon_capipepo_attack.png",
   0,
-  "pet1"
+  "pet1",
+  "./assets/Pikachu.png"
 );
 let charmander = new Mokepon(
   "Charmander",
   "./assets/mokepons_mokepon_hipodoge_attack.png",
   0,
-  "pet2"
+  "pet2",
+  "./assets/Charmander.png"
 );
 let pickle = new Mokepon(
   "Pickle",
   "./assets/mokepons_mokepon_ratigueya_attack.png",
   0,
-  "pet3"
+  "pet3",
+  "./assets/Pickle.png"
+);
+let pikachuEnemigo = new Mokepon(
+  "Pikachu",
+  "./assets/mokepons_mokepon_capipepo_attack.png",
+  0,
+  "pet1",
+  "./assets/Pikachu.png",
+  250,
+  120
+);
+let charmanderEnemigo = new Mokepon(
+  "Charmander",
+  "./assets/mokepons_mokepon_hipodoge_attack.png",
+  0,
+  "pet2",
+  "./assets/Charmander.png",
+  150,
+  275
+);
+let pickleEnemigo = new Mokepon(
+  "Pickle",
+  "./assets/mokepons_mokepon_ratigueya_attack.png",
+  0,
+  "pet3",
+  "./assets/Pickle.png",
+  400,
+  250
 );
 
 /* Then, we need to push the information into an array */
@@ -204,8 +241,6 @@ function seleccionarMascotaJugador() {
   // The next line of code defines the array of the Mokepons attacks
   ataquesMokeponEnemigo = Mokepones[randomSelect].ataques;
 
-  beginMap()
-
   // Player selection
   if (inputPikachu.checked) {
     selectMascotaJugador.innerHTML = inputPikachu.id;
@@ -229,6 +264,8 @@ function seleccionarMascotaJugador() {
     alert("Elige una mascota para poder jugar");
     return 0;
   }
+
+  beginMap();
 
   // local functions
   extraerAtaques(mascotaJugador);
@@ -432,64 +469,106 @@ function attackButtomDisabled() {
 }
 
 function beginMap() {
-  // Canva intervals
-  interval = setInterval(pintarPersonaje, 50)
-  pintarPersonaje()
+  mapa.width = 600;
+  mapa.height = 400;
 
-  window.addEventListener('keydown', aPressedKey)
-  window.addEventListener('keyup', stopMovement)
+  myMokepon = getPet(mascotaJugador);
+  console.log(myMokepon, mascotaJugador);
+
+  // Canva intervals
+  interval = setInterval(pintarCanva, 50);
+  pintarCanva();
+
+  window.addEventListener("keydown", aPressedKey);
+  window.addEventListener("keyup", stopMovement);
 }
 
-function pintarPersonaje() {
-  pikachu.x = pikachu.x + pikachu.velocidadX
-  pikachu.y = pikachu.y + pikachu.velocidadY
-  
+function pintarCanva() {
+  myMokepon.x = myMokepon.x + myMokepon.velocidadX;
+  myMokepon.y = myMokepon.y + myMokepon.velocidadY;
+
   lienzo.clearRect(0, 0, mapa.width, mapa.height);
-  lienzo.drawImage(
-    pikachu.mapaFoto,
-    pikachu.x,
-    pikachu.y,
-    pikachu.width,
-    pikachu.height
-  ); // Creating a rectangle
+  lienzo.drawImage(mapBackground, 0, 0, mapa.width, mapa.height);
+  myMokepon.pintarMokepon();
+  pikachuEnemigo.pintarMokepon();
+  charmanderEnemigo.pintarMokepon();
+  pickleEnemigo.pintarMokepon();
+  
+  if (myMokepon.velocidadX !== 0 || myMokepon.velocidadY !== 0) {
+    collisionTest(pikachuEnemigo);
+    collisionTest(charmanderEnemigo);
+    collisionTest(pickleEnemigo);
+  }
 }
 
 function moverPikachuRight() {
-  pikachu.velocidadX = 5
+  myMokepon.velocidadX = 5;
 }
 
 function moverPikachuLeft() {
-  pikachu.velocidadX = -5
+  myMokepon.velocidadX = -5;
 }
 
 function moverPikachuUp() {
-  pikachu.velocidadY = -5
+  myMokepon.velocidadY = -5;
 }
 
 function moverPikachuDown() {
-  pikachu.velocidadY = 5
+  myMokepon.velocidadY = 5;
 }
 
 function stopMovement() {
-  pikachu.velocidadX = 0
-  pikachu.velocidadY = 0
+  myMokepon.velocidadX = 0;
+  myMokepon.velocidadY = 0;
 }
 
 function aPressedKey(event) {
   switch (event.key) {
-    case 'ArrowUp':
-      moverPikachuUp()
+    case "ArrowUp":
+      moverPikachuUp();
       break;
-    case 'ArrowDown':
-      moverPikachuDown()
+    case "ArrowDown":
+      moverPikachuDown();
       break;
-    case 'ArrowLeft':
-      moverPikachuLeft()
+    case "ArrowLeft":
+      moverPikachuLeft();
       break;
-    case 'ArrowRight':
-      moverPikachuRight()
+    case "ArrowRight":
+      moverPikachuRight();
       break;
   }
+}
+
+function getPet() {
+  // This function will return the mokepo according to the player's choosing
+  for (let i = 0; i < Mokepones.length; i++) {
+    if (mascotaJugador === Mokepones[i].name) {
+      return Mokepones[i];
+    }
+  }
+}
+
+function collisionTest(enemigo) {
+  const upEnemy = enemigo.y;
+  const downEnemy = enemigo.y + enemigo.height;
+  const rightEnemy = enemigo.x + enemigo.width;
+  const leftEnemy = enemigo.x;
+
+  const upPlayer = myMokepon.y;
+  const downPlayer = myMokepon.y + myMokepon.height;
+  const rightPlayer = myMokepon.x + myMokepon.width;
+  const leftPlayer = myMokepon.x;
+
+  if (
+    downPlayer < upEnemy ||
+    upPlayer > downEnemy ||
+    rightPlayer < leftEnemy ||
+    leftPlayer > rightEnemy
+  ) {
+    return;
+  }
+  stopMovement()
+  alert("Colisión contra " + enemigo.name);
 }
 
 // Deciding the winner
