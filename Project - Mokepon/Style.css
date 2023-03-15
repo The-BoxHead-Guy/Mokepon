@@ -8,7 +8,7 @@ body {
 }
 
 /* Responsive design */
-@media (max-width: 500px) {
+@media (max-width: 560px) {
   #pet-interface {
     flex-direction: column;
   }
@@ -23,6 +23,12 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
+  }
+
+  #ver-mapa div {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
   }
 }
 
@@ -46,9 +52,26 @@ input {
   justify-content: center;
 }
 
-#mapa {
-  border: 2px solid white;
+#ver-mapa button {
+  border: solid white 2px;
+  border-radius: 20px;
+  font-family: "Fredoka One", cursive;
+  width: 200px;
+  height: 45px;
+  padding: 10px;
+  margin: 10px;
+  color: #787f60;
+  background-color: #dae2b6;
 }
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+}
+
+/* #mapa {
+  border: 2px solid white;
+} */
 
 .buttonsCanva {
   display: flex;

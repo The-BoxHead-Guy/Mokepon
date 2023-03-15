@@ -44,6 +44,18 @@ let mapBackground = new Image();
 mapBackground.src = "./assets/mokemap.png";
 let lienzo = mapa.getContext("2d");
 let interval;
+let heightMap
+let widthMap = window.innerWidth - 20
+const maxWidthMap = 350
+
+if (widthMap > maxWidthMap) {
+  widthMap = maxWidthMap
+}
+
+heightMap = widthMap * 600 / 800
+
+mapa.width = widthMap
+mapa.height = heightMap
 
 // Attacks
 const fireAttack = "Fuego 🔥";
@@ -93,7 +105,7 @@ let typeAttack;
 
 /* Creating a class as well as an object named "Mokepon" */
 class Mokepon {
-  constructor(name, photo, victories, pet, mapPhoto, x = 10, y = 10) {
+  constructor(name, photo, victories, pet, mapPhoto) {
     this.name = name;
     this.photo = photo;
     this.victories = victories;
@@ -101,10 +113,10 @@ class Mokepon {
     this.ataques = [];
 
     // Canva
-    this.x = x;
-    this.y = y;
-    this.width = 80;
-    this.height = 80;
+    this.width = 50;
+    this.height = 50;
+    this.x = random(0, mapa.width - this.width);
+    this.y = random(0, mapa.height - this.height)
     this.mapPhoto = new Image();
     this.mapPhoto.src = mapPhoto;
     this.velocidadX = 0;
@@ -144,8 +156,6 @@ let pikachuEnemigo = new Mokepon(
   0,
   "pet1",
   "./assets/Pikachu.png",
-  250,
-  120
 );
 let charmanderEnemigo = new Mokepon(
   "Charmander",
@@ -153,8 +163,6 @@ let charmanderEnemigo = new Mokepon(
   0,
   "pet2",
   "./assets/Charmander.png",
-  150,
-  275
 );
 let pickleEnemigo = new Mokepon(
   "Pickle",
@@ -162,8 +170,6 @@ let pickleEnemigo = new Mokepon(
   0,
   "pet3",
   "./assets/Pickle.png",
-  400,
-  250
 );
 
 /* Then, we need to push the information into an array */
@@ -236,7 +242,7 @@ function beginGame() {
 function seleccionarMascotaJugador() {
   // Saving Enemy's pet variable as well as choosing it.
   randomSelect = random(0, Mokepones.length - 1);
-  selectMascotaEnemigo.innerHTML = Mokepones[randomSelect].name;
+  /* selectMascotaEnemigo.innerHTML = Mokepones[randomSelect].name; */
 
   // The next line of code defines the array of the Mokepons attacks
   ataquesMokeponEnemigo = Mokepones[randomSelect].ataques;
@@ -355,6 +361,7 @@ function getEnemyAttack(typeAttack) {
     console.log(ataqueJugador.length);
     beginFight();
   }
+  console.log(ataqueEnemigo, ataqueJugador);
 }
 
 // Waiting for the selection of the attacks and then display the battle
@@ -469,8 +476,6 @@ function attackButtomDisabled() {
 }
 
 function beginMap() {
-  mapa.width = 600;
-  mapa.height = 400;
 
   myMokepon = getPet(mascotaJugador);
   console.log(myMokepon, mascotaJugador);
@@ -568,7 +573,9 @@ function collisionTest(enemigo) {
     return;
   }
   stopMovement()
-  alert("Colisión contra " + enemigo.name);
+  showAttackSection.style.display = 'flex';
+  sectionVerMapa.style.display = 'none'
+  selectMascotaEnemigo.innerHTML = enemigo.name
 }
 
 // Deciding the winner
