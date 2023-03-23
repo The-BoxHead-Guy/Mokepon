@@ -1,0 +1,265 @@
+/* The imported font */
+@import url("https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap");
+
+/* Applying the font */
+body {
+  background: #ccd6a6;
+  font-family: "Fredoka One", cursive;
+}
+
+/* Responsive design */
+@media (max-width: 560px) {
+  #pet-interface {
+    flex-direction: column;
+  }
+
+  .cajita-botones {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #ver-mapa div {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
+/* General parameters */
+input {
+  display: none;
+}
+
+/* 1st section */
+#Seleccionar-Mascota {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Canva */
+#ver-mapa {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#ver-mapa button {
+  border: solid white 2px;
+  border-radius: 20px;
+  font-family: "Fredoka One", cursive;
+  width: 200px;
+  height: 45px;
+  padding: 10px;
+  margin: 10px;
+  color: #787f60;
+  background-color: #dae2b6;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: row;
+}
+
+/* #mapa {
+  border: 2px solid white;
+} */
+
+.buttonsCanva {
+  display: flex;
+  flex-direction: row;
+}
+
+#title {
+  display: flex;
+  color: #787f60;
+  justify-content: center;
+}
+
+.pet-title {
+  color: #787f60;
+}
+
+/* Pet UI interface */
+#pet-interface {
+  display: flex;
+  gap: 10px;
+}
+
+#pet-interface img {
+  width: 90px;
+  margin-left: 10px;
+}
+
+#pet-interface label {
+  margin: 5px;
+  display: flex;
+  align-items: center;
+  color: #5d7055;
+  background-color: #dae2b6;
+  border-radius: 15px;
+  width: 225px;
+  height: 110px;
+  justify-content: space-evenly;
+}
+
+/* Character cards presentation */
+#containerCards {
+  display: flex;
+}
+
+input:hover + #pet1,
+input:hover + #pet2,
+input:hover + #pet3 {
+  background-color: #faab78;
+  color: #fffbac;
+  cursor: pointer;
+}
+
+input:checked + #pet1,
+input:checked + #pet2,
+input:checked + #pet3 {
+  background-color: #faab78;
+  color: #fffbac;
+}
+
+/* Selecting the pet */
+#Select-Mascota {
+  border: none;
+  border-radius: 20px;
+  font-family: "Fredoka One", cursive;
+  width: 200px;
+  height: 45px;
+  padding: 10px;
+  margin: 10px;
+  color: #787f60;
+  background-color: #dae2b6;
+}
+
+#Select-Mascota:hover {
+  background-color: #faab78;
+  color: #fffbac;
+  cursor: pointer;
+}
+
+/* Second block */
+#Seleccionar-Ataque {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Attack buttons */
+.boton-de-ataque {
+  border-radius: 20px;
+  box-sizing: border-box;
+  width: 100px;
+  height: 50px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding: 10px;
+}
+
+#btn-Fuego {
+  background-color: hsl(0, 75%, 49%);
+  color: white;
+}
+
+#btn-Agua {
+  background-color: hsl(240, 49%, 49%);
+  color: white;
+}
+
+#btn-Tierra {
+  background-color: hsla(120, 100%, 30%, 0.654);
+  color: white;
+}
+
+/* Adding swag to the button */
+#btn-Fuego:hover{
+  background-color: hsl(0, 92%, 60%);
+  cursor: pointer;
+}
+
+#btn-Agua:hover{
+  background-color: hsl(240, 85%, 62%);
+  cursor: pointer;
+}
+#btn-Tierra:hover{
+  background-color: hsl(120, 79%, 46%);
+  cursor: pointer;
+}
+
+/* message display */
+.battle-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #dae2b6;
+  padding: 15px;
+  border: 2px solid beige;
+  margin: 20px;
+  border-radius: 20px;
+  color: #767d5e;
+}
+
+.battle-result button {
+  background-color: transparent;
+  border: 2px solid beige;
+  border-radius: 20px;
+  padding: 5px;
+  margin: 5px;
+  width: 144px;
+  height: 44px;
+  font-family: "Fredoka One", cursive;
+  color: #5d7055;
+  font-size: 18px;
+}
+
+.battle-result:hover button {
+  background-color: #767d5e;
+  color: white;
+  cursor: pointer;
+}
+
+/* Result Message */
+.Result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #dae2b6;
+  padding: 15px;
+  border: 2px solid beige;
+  margin: 20px;
+  border-radius: 20px;
+  color: #767d5e;
+}
+
+/* Message Container */
+#pet-messages {
+  display: grid;
+  grid-template-columns: 50% 50%;
+  grid-template-rows: 50% 50%;
+  border: solid 2px #fcfff0;
+  border-radius: 16px;
+  background-color: hsl(72, 52%, 83%);
+  width: 400px;
+}
+
+.display-messages {
+  margin: 10px;
+  text-align: center;
+}
+
+.display-result {
+  margin: 10px;
+  text-align: center;
+}
