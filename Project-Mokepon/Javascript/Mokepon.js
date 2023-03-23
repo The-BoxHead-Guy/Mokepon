@@ -83,7 +83,7 @@ let victoriesEnemy = 0;
 let mokeponOption = 0;
 
 // Pet information
-let playerId = null
+let playerId = null;
 let mascotaJugador;
 let ataquesMokepon;
 let ataquesMokeponEnemigo;
@@ -248,7 +248,7 @@ function joinGame() {
     if (res.ok) {
       res.text().then(function (answer) {
         console.log(answer);
-        playerId = answer
+        playerId = answer;
       });
     }
   }); // Making the call
@@ -309,8 +309,6 @@ function selectMokepon(mascotaJugador) {
     Headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ mokepon: mascotaJugador }),
   });
-
-  
 }
 
 // The function which it will work as the random select of our enemy
@@ -522,6 +520,10 @@ function pintarCanva() {
   lienzo.clearRect(0, 0, mapa.width, mapa.height);
   lienzo.drawImage(mapBackground, 0, 0, mapa.width, mapa.height);
   myMokepon.pintarMokepon();
+
+  // Sending coordenates to the server
+  sendCoordinates(myMokepon.x, myMokepon.y);
+
   pikachuEnemigo.pintarMokepon();
   charmanderEnemigo.pintarMokepon();
   pickleEnemigo.pintarMokepon();
@@ -531,6 +533,19 @@ function pintarCanva() {
     collisionTest(charmanderEnemigo);
     collisionTest(pickleEnemigo);
   }
+}
+
+function sendCoordinates(x, y) {
+  const request = fetch(`http:localhost:8080/mokepon/${playerId}/position`, {
+    method: "post",
+    headers: {
+      "Content-Type": "application.json",
+    },
+    body: JSON.stringify({
+      x,
+      y,
+    }),
+  });
 }
 
 function moverPikachuRight() {

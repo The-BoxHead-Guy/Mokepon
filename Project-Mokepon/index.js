@@ -18,6 +18,11 @@ class Player {
     asignMokepon(mokepon) {
         this.mokepon = mokepon
     }
+
+    refreshPosition (x, y) {
+        this.x = x;
+        this.y = y;
+    }
 }
 
 class Mokepon {
@@ -51,6 +56,19 @@ app.post("/mokepon/:playerId", (req, res) => {
 
     console.log(players);
     console.log(playerId);
+    res.end()
+})
+
+app.post("/mokepon/:playerId/position", (req, res) => {
+    const playerId = req.params.playerId || ""
+    const x = req.body.x || 0
+    const y = req.body.y || 0
+    const playerIndex = player.findIndex((player) => playerId === player.id)
+
+    if (playerIndex) {
+        players[playerIndex].refreshPosition(x, y);
+    }
+
     res.end()
 })
 
