@@ -19,7 +19,7 @@ class Player {
         this.mokepon = mokepon
     }
 
-    refreshPosition (x, y) {
+    refreshPosition(x, y) {
         this.x = x;
         this.y = y;
     }
@@ -63,13 +63,19 @@ app.post("/mokepon/:playerId/position", (req, res) => {
     const playerId = req.params.playerId || ""
     const x = req.body.x || 0
     const y = req.body.y || 0
-    const playerIndex = player.findIndex((player) => playerId === player.id)
+
+    // Player index
+    const playerIndex = players.findIndex((player) => playerId === player.id)
 
     if (playerIndex) {
         players[playerIndex].refreshPosition(x, y);
     }
 
-    res.end()
+    const enemies = players.filter((players) => playerId !== players.id)
+
+    res.send({
+        enemies
+    })
 })
 
 // Initiating the server

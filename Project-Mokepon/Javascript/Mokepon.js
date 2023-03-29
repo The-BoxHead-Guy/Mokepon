@@ -106,7 +106,8 @@ let typeAttack;
 
 /* Creating a class as well as an object named "Mokepon" */
 class Mokepon {
-  constructor(name, photo, victories, pet, mapPhoto) {
+  constructor(name, photo, victories, pet, mapPhoto, id = null) {
+    this.id = id
     this.name = name;
     this.photo = photo;
     this.victories = victories;
@@ -151,53 +152,40 @@ let pickle = new Mokepon(
   "pet3",
   "./assets/Pickle.png"
 );
-let pikachuEnemigo = new Mokepon(
-  "Pikachu",
-  "./assets/mokepons_mokepon_capipepo_attack.png",
-  0,
-  "pet1",
-  "./assets/Pikachu.png"
-);
-let charmanderEnemigo = new Mokepon(
-  "Charmander",
-  "./assets/mokepons_mokepon_hipodoge_attack.png",
-  0,
-  "pet2",
-  "./assets/Charmander.png"
-);
-let pickleEnemigo = new Mokepon(
-  "Pickle",
-  "./assets/mokepons_mokepon_ratigueya_attack.png",
-  0,
-  "pet3",
-  "./assets/Pickle.png"
-);
 
 /* Then, we need to push the information into an array */
 Mokepones.push(pikachu, charmander, pickle);
 
+const PIKACHU_ATTACKS = [
+  { name: "Agua 🌊", id: "btn-Agua" },
+  { name: "Agua 🌊", id: "btn-Agua" },
+  { name: "Agua 🌊", id: "btn-Agua" },
+  { name: "Tierra 🌍", id: "btn-Tierra" },
+  { name: "Fuego 🔥", id: "btn-Fuego" },
+];
+
+const CHARMANDER_ATTACKS = [
+  { name: "Fuego 🔥", id: "btn-Fuego" },
+  { name: "Fuego 🔥", id: "btn-Fuego" },
+  { name: "Fuego 🔥", id: "btn-Fuego" },
+  { name: "Tierra 🌍", id: "btn-Tierra" },
+  { name: "Agua 🌊", id: "btn-Agua" },
+];
+
+const PICKLE_ATTACKS = [
+  { name: "Tierra 🌍", id: "btn-Tierra" },
+  { name: "Tierra 🌍", id: "btn-Tierra" },
+  { name: "Tierra 🌍", id: "btn-Tierra" },
+  { name: "Agua 🌊", id: "btn-Agua" },
+  { name: "Fuego 🔥", id: "btn-Fuego" },
+];
+
 // Using "push" to generate the attacks
-pikachu.ataques.push(
-  { name: "Agua 🌊", id: "btn-Agua" },
-  { name: "Agua 🌊", id: "btn-Agua" },
-  { name: "Agua 🌊", id: "btn-Agua" },
-  { name: "Tierra 🌍", id: "btn-Tierra" },
-  { name: "Fuego 🔥", id: "btn-Fuego" }
-);
-charmander.ataques.push(
-  { name: "Fuego 🔥", id: "btn-Fuego" },
-  { name: "Fuego 🔥", id: "btn-Fuego" },
-  { name: "Fuego 🔥", id: "btn-Fuego" },
-  { name: "Tierra 🌍", id: "btn-Tierra" },
-  { name: "Agua 🌊", id: "btn-Agua" }
-);
-pickle.ataques.push(
-  { name: "Tierra 🌍", id: "btn-Tierra" },
-  { name: "Tierra 🌍", id: "btn-Tierra" },
-  { name: "Tierra 🌍", id: "btn-Tierra" },
-  { name: "Agua 🌊", id: "btn-Agua" },
-  { name: "Fuego 🔥", id: "btn-Fuego" }
-);
+pikachu.ataques.push(...PIKACHU_ATTACKS);
+
+charmander.ataques.push(...CHARMANDER_ATTACKS);
+
+pickle.ataques.push(...PICKLE_ATTACKS);
 
 //--------------------------------------------------------
 
@@ -304,9 +292,9 @@ function seleccionarMascotaJugador() {
 }
 
 function selectMokepon(mascotaJugador) {
-  const request = fetch(`http://localhost:8080/mokepon/${playerId}`, {
+  fetch(`http://localhost:8080/mokepon/${playerId}`, {
     method: "post",
-    Headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ mokepon: mascotaJugador }),
   });
 }
@@ -524,19 +512,19 @@ function pintarCanva() {
   // Sending coordenates to the server
   sendCoordinates(myMokepon.x, myMokepon.y);
 
-  pikachuEnemigo.pintarMokepon();
+  /* pikachuEnemigo.pintarMokepon();
   charmanderEnemigo.pintarMokepon();
-  pickleEnemigo.pintarMokepon();
+  pickleEnemigo.pintarMokepon(); */
 
-  if (myMokepon.velocidadX !== 0 || myMokepon.velocidadY !== 0) {
+  /* if (myMokepon.velocidadX !== 0 || myMokepon.velocidadY !== 0) {
     collisionTest(pikachuEnemigo);
     collisionTest(charmanderEnemigo);
     collisionTest(pickleEnemigo);
-  }
+  } */
 }
 
 function sendCoordinates(x, y) {
-  const request = fetch(`http:localhost:8080/mokepon/${playerId}/position`, {
+  fetch(`http:localhost:8080/mokepon/${playerId}/position`, {
     method: "post",
     headers: {
       "Content-Type": "application.json",
@@ -545,6 +533,50 @@ function sendCoordinates(x, y) {
       x,
       y,
     }),
+  }).then(function (res) {
+    if (res.ok) {
+      res.json().then(function ({ enemies }) {
+        console.log(enemies);
+
+        enemies.forEach(function (enemy) {
+          // Variable for enemies
+          let mokeponEnemy = null;
+          const mokeponName = enemy.mokepon.name || "";
+
+          if (enemy.mokepon !== undefined) {
+            if (mokeponName === "Pikachu") {
+              mokeponEnemy = new Mokepon(
+                "Pikachu",
+                "./assets/mokepons_mokepon_capipepo_attack.png",
+                0,
+                "pet1",
+                "./assets/Pikachu.png"
+              );
+            } else if (mokeponName === "Charmander") {
+              mokeponEnemy = new Mokepon(
+                "Charmander",
+                "./assets/mokepons_mokepon_hipodoge_attack.png",
+                0,
+                "pet2",
+                "./assets/Charmander.png"
+              );
+            } else if (mokeponName === "Pickle") {
+              mokeponEnemy = new Mokepon(
+                "Pickle",
+                "./assets/mokepons_mokepon_ratigueya_attack.png",
+                0,
+                "pet3",
+                "./assets/Pickle.png"
+              );
+            }
+            mokeponEnemy.x = enemy.x
+            mokeponEnemy.y = enemy.y
+            
+            mokeponEnemy.pintarMokepon();
+          }    
+        })  
+      });
+    }
   });
 }
 
