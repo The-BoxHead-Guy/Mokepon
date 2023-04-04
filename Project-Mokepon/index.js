@@ -1,12 +1,16 @@
 // Importing Express.JS
 const express = require("express")
 const cors = require("cors")
+const bodyParser = require('body-parser')
 
 // Executing express.js
 const app = express()
 
 app.use(cors()) // A library of Express
 app.use(express.json())
+
+// A library that analyses our 'req.body'
+app.use(bodyParser.urlencoded({extended: true}))
 
 const players = []
 
@@ -17,6 +21,15 @@ class Player {
 
     asignMokepon(mokepon) {
         this.mokepon = mokepon
+    }
+
+    refreshPosition(x, y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    asignAttacks(attacks) {
+        this.attacks = attacks
     }
 }
 
@@ -52,6 +65,46 @@ app.post("/mokepon/:playerId", (req, res) => {
     console.log(players);
     console.log(playerId);
     res.end()
+})
+
+app.post("/mokepon/:playerId/position", (req, res) => {
+    const playerId = req.params.playerId || ""
+    let x = req.body.pointX || 0
+    let y = req.body.pointY || 0
+
+    // Player index
+    const playerIndex = players.findIndex((player) => playerId === player.id)
+
+    if (playerIndex) {
+        players[playerIndex].refreshPosition(x, y);
+    }
+
+    const enemies = players.filter((players) => playerId !== players.id)
+
+    res.send({
+        enemies
+    })
+})
+
+app.post("/mokepon/:playerId/attacks", (req, res) => {
+    const playerId = req.params.playerId || ""
+    const attacks = req.body.attacks || []
+
+    const playerIndex = players.findIndex((player) => playerId === player.id)
+
+    if (playerIndex >= 0) {
+        players[playerIndex].asignAttacks(attacks)
+    }
+    res.end()
+})
+
+app.get("/mokepon/:playerId/attacks", (req, res) => {
+    const playerId = req.params.playerId || ""
+    const player = players.find((player) => player.id === playerId)
+
+    res.send({
+        attacks: player.attacks || []
+    })
 })
 
 // Initiating the server

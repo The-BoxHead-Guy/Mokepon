@@ -40,6 +40,7 @@ const containerAttacks = document.getElementById("containerAttacks");
 const sectionVerMapa = document.getElementById("ver-mapa");
 const mapa = document.getElementById("mapa");
 let myMokepon;
+let enemyMokepons = [];
 let mapBackground = new Image();
 mapBackground.src = "./assets/mokemap.png";
 let lienzo = mapa.getContext("2d");
@@ -83,10 +84,11 @@ let victoriesEnemy = 0;
 let mokeponOption = 0;
 
 // Pet information
-let playerId = null
+let playerId = null;
+let enemyId = null;
 let mascotaJugador;
-let ataquesMokepon;
-let ataquesMokeponEnemigo;
+let attacksMokepon;
+let attacksMokeponEnemigo;
 let indexAtaqueJugador = [];
 let indexAtaqueEnemigo = [];
 let attackResults;
@@ -106,12 +108,13 @@ let typeAttack;
 
 /* Creating a class as well as an object named "Mokepon" */
 class Mokepon {
-  constructor(name, photo, victories, pet, mapPhoto) {
+  constructor(name, photo, victories, pet, mapPhoto, id = null) {
+    this.id = id;
     this.name = name;
     this.photo = photo;
     this.victories = victories;
     this.pet = pet;
-    this.ataques = [];
+    this.attacks = [];
 
     // Canva
     this.width = 50;
@@ -151,53 +154,38 @@ let pickle = new Mokepon(
   "pet3",
   "./assets/Pickle.png"
 );
-let pikachuEnemigo = new Mokepon(
-  "Pikachu",
-  "./assets/mokepons_mokepon_capipepo_attack.png",
-  0,
-  "pet1",
-  "./assets/Pikachu.png"
-);
-let charmanderEnemigo = new Mokepon(
-  "Charmander",
-  "./assets/mokepons_mokepon_hipodoge_attack.png",
-  0,
-  "pet2",
-  "./assets/Charmander.png"
-);
-let pickleEnemigo = new Mokepon(
-  "Pickle",
-  "./assets/mokepons_mokepon_ratigueya_attack.png",
-  0,
-  "pet3",
-  "./assets/Pickle.png"
-);
 
 /* Then, we need to push the information into an array */
 Mokepones.push(pikachu, charmander, pickle);
 
+const PIKACHU_ATTACKS = [
+  { name: "Agua 🌊", id: "btn-Agua" },
+  { name: "Agua 🌊", id: "btn-Agua" },
+  { name: "Agua 🌊", id: "btn-Agua" },
+  { name: "Tierra 🌍", id: "btn-Tierra" },
+  { name: "Fuego 🔥", id: "btn-Fuego" },
+];
+
+const CHARMANDER_ATTACKS = [
+  { name: "Fuego 🔥", id: "btn-Fuego" },
+  { name: "Fuego 🔥", id: "btn-Fuego" },
+  { name: "Fuego 🔥", id: "btn-Fuego" },
+  { name: "Tierra 🌍", id: "btn-Tierra" },
+  { name: "Agua 🌊", id: "btn-Agua" },
+];
+
+const PICKLE_ATTACKS = [
+  { name: "Tierra 🌍", id: "btn-Tierra" },
+  { name: "Tierra 🌍", id: "btn-Tierra" },
+  { name: "Tierra 🌍", id: "btn-Tierra" },
+  { name: "Agua 🌊", id: "btn-Agua" },
+  { name: "Fuego 🔥", id: "btn-Fuego" },
+];
+
 // Using "push" to generate the attacks
-pikachu.ataques.push(
-  { name: "Agua 🌊", id: "btn-Agua" },
-  { name: "Agua 🌊", id: "btn-Agua" },
-  { name: "Agua 🌊", id: "btn-Agua" },
-  { name: "Tierra 🌍", id: "btn-Tierra" },
-  { name: "Fuego 🔥", id: "btn-Fuego" }
-);
-charmander.ataques.push(
-  { name: "Fuego 🔥", id: "btn-Fuego" },
-  { name: "Fuego 🔥", id: "btn-Fuego" },
-  { name: "Fuego 🔥", id: "btn-Fuego" },
-  { name: "Tierra 🌍", id: "btn-Tierra" },
-  { name: "Agua 🌊", id: "btn-Agua" }
-);
-pickle.ataques.push(
-  { name: "Tierra 🌍", id: "btn-Tierra" },
-  { name: "Tierra 🌍", id: "btn-Tierra" },
-  { name: "Tierra 🌍", id: "btn-Tierra" },
-  { name: "Agua 🌊", id: "btn-Agua" },
-  { name: "Fuego 🔥", id: "btn-Fuego" }
-);
+pikachu.attacks.push(...PIKACHU_ATTACKS);
+charmander.attacks.push(...CHARMANDER_ATTACKS);
+pickle.attacks.push(...PICKLE_ATTACKS);
 
 //--------------------------------------------------------
 
@@ -248,7 +236,7 @@ function joinGame() {
     if (res.ok) {
       res.text().then(function (answer) {
         console.log(answer);
-        playerId = answer
+        playerId = answer;
       });
     }
   }); // Making the call
@@ -260,7 +248,7 @@ function seleccionarMascotaJugador() {
   /* selectMascotaEnemigo.innerHTML = Mokepones[randomSelect].name; */
 
   // The next line of code defines the array of the Mokepons attacks
-  ataquesMokeponEnemigo = Mokepones[randomSelect].ataques;
+  attacksMokeponEnemigo = Mokepones[randomSelect].attacks;
 
   // Player selection
   if (inputPikachu.checked) {
@@ -289,7 +277,7 @@ function seleccionarMascotaJugador() {
   beginMap();
 
   // local functions
-  extraerAtaques(mascotaJugador);
+  extraerattacks(mascotaJugador);
 
   // Messages section activation and hiding.
   function displaySectionPetMessages() {
@@ -304,13 +292,11 @@ function seleccionarMascotaJugador() {
 }
 
 function selectMokepon(mascotaJugador) {
-  const request = fetch(`http://localhost:8080/mokepon/${playerId}`, {
+  fetch(`http://localhost:8080/mokepon/${playerId}`, {
     method: "post",
-    Headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ mokepon: mascotaJugador }),
   });
-
-  
 }
 
 // The function which it will work as the random select of our enemy
@@ -318,28 +304,28 @@ function random(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function extraerAtaques(mascotaJugador) {
+function extraerattacks(mascotaJugador) {
   // Local variable
-  let ataques;
+  let attacks;
 
   // Loop to get the attacks of the respective character
   for (let i = 0; i < Mokepones.length; i++) {
     if (
       mascotaJugador === Mokepones[i].name /* Pikachu; Charmander; Pickle */
     ) {
-      ataques = Mokepones[i].ataques;
+      attacks = Mokepones[i].attacks;
     }
   }
   // After loop ends, the next function starts
-  mostrarAtaques(ataques);
+  mostrarattacks(attacks);
 }
 
-function mostrarAtaques(ataques) {
-  ataques.forEach((ataques) => {
-    ataquesMokepon = `
-    <button id=${ataques.id} class="boton-de-ataque btnAtaque">${ataques.name}</button>
+function mostrarattacks(attacks) {
+  attacks.forEach((attacks) => {
+    attacksMokepon = `
+    <button id=${attacks.id} class="boton-de-ataque btnAtaque">${attacks.name}</button>
     `;
-    containerAttacks.innerHTML += ataquesMokepon;
+    containerAttacks.innerHTML += attacksMokepon;
   });
 
   fireAttackButtom = document.getElementById("btn-Fuego");
@@ -368,16 +354,47 @@ function attackSequency(botones) {
         boton.style.background = "#848161";
         boton.disabled = true;
       }
+      if (ataqueJugador.length === 5) {
+        sendAttacks()
+      }
+
       // Getting enemy's attack
-      getEnemyAttack(
-        (typeAttack = random(0, ataquesMokeponEnemigo.length - 1))
-      );
+      /* getEnemyAttack(
+        (typeAttack = random(0, attacksMokeponEnemigo.length - 1))
+      ); */
     });
   });
 }
 
+function sendAttacks() {
+  fetch(`http:/localhost:8080/mokepon/${playerId}/attacks`, {
+    method: "post",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      attacks: ataqueJugador
+    })
+  })
+
+  interval = setInterval(getAttacks, 50)
+}
+
+function getAttacks() {
+  fetch(`http:/localhost:8080/mokepon/${enemyId}/attacks`)
+  .then(function (res) {
+    if (res.ok) {
+      res.json()
+      .then(function ({ attacks }) {
+        if (attacks.length === 5) {
+          ataqueEnemigo = attacks
+          beginFight()
+        }
+      })
+    }
+  })
+}
+
 // This next function will get the randomAttack from enemy right after clicking the "Fire, water or earth" buttom
-function getEnemyAttack(typeAttack) {
+/* function getEnemyAttack(typeAttack) {
   if (typeAttack === 0 || typeAttack === 1) {
     ataqueEnemigo.push("FUEGO");
   } else if (typeAttack === 3) {
@@ -390,10 +407,11 @@ function getEnemyAttack(typeAttack) {
     beginFight();
   }
   console.log(ataqueEnemigo, ataqueJugador);
-}
+} */
 
 // Waiting for the selection of the attacks and then display the battle
 function beginFight() {
+  clearInterval(interval)
   let messageResult = "";
 
   for (let index = 0; index < ataqueJugador.length; index++) {
@@ -506,6 +524,7 @@ function attackButtomDisabled() {
 function beginMap() {
   myMokepon = getPet(mascotaJugador);
   console.log(myMokepon, mascotaJugador);
+  console.log(myMokepon.x, myMokepon.y);
 
   // Canva intervals
   interval = setInterval(pintarCanva, 50);
@@ -522,15 +541,86 @@ function pintarCanva() {
   lienzo.clearRect(0, 0, mapa.width, mapa.height);
   lienzo.drawImage(mapBackground, 0, 0, mapa.width, mapa.height);
   myMokepon.pintarMokepon();
-  pikachuEnemigo.pintarMokepon();
-  charmanderEnemigo.pintarMokepon();
-  pickleEnemigo.pintarMokepon();
 
-  if (myMokepon.velocidadX !== 0 || myMokepon.velocidadY !== 0) {
+  // Sending coordenates to the server
+  sendCoordinates(myMokepon.x, myMokepon.y);
+
+  enemyMokepons.forEach(function (mokepon) {
+    mokepon.pintarMokepon();
+    collisionTest(mokepon)
+  });
+
+  /* pikachuEnemigo.pintarMokepon();
+  charmanderEnemigo.pintarMokepon();
+  pickleEnemigo.pintarMokepon(); */
+
+  /* if (myMokepon.velocidadX !== 0 || myMokepon.velocidadY !== 0) {
     collisionTest(pikachuEnemigo);
     collisionTest(charmanderEnemigo);
     collisionTest(pickleEnemigo);
-  }
+  } */
+}
+
+function sendCoordinates(x, y) {
+  console.log("Sent coordinates: ", x, y)
+  const pointX = x
+  const pointY = y
+  fetch(`http:localhost:8080/mokepon/${playerId}/position`, {
+    method: "post",
+    headers: {
+      "Content-Type": "application.json",
+    },
+    body: JSON.stringify({
+      position: pointX,
+      position: pointY,
+    }),
+  }).then(function (res) {
+    if (res.ok) {
+      res.json().then(function ({ enemies }) {
+        enemyMokepons = enemies.map(function (enemy) {
+          console.log({ enemy });
+          // Variable for enemies
+          let mokeponEnemy = null;
+          const mokeponName = enemy.mokepon.name || "";
+
+          if (enemy.mokepon !== undefined) {
+            if (mokeponName === "Pikachu") {
+              mokeponEnemy = new Mokepon(
+                "Pikachu",
+                "./assets/mokepons_mokepon_capipepo_attack.png",
+                0,
+                "pet1",
+                "./assets/Pikachu.png",
+                enemy.id
+              );
+            } else if (mokeponName === "Charmander") {
+              mokeponEnemy = new Mokepon(
+                "Charmander",
+                "./assets/mokepons_mokepon_hipodoge_attack.png",
+                0,
+                "pet2",
+                "./assets/Charmander.png",
+                enemy.id
+              );
+            } else if (mokeponName === "Pickle") {
+              mokeponEnemy = new Mokepon(
+                "Pickle",
+                "./assets/mokepons_mokepon_ratigueya_attack.png",
+                0,
+                "pet3",
+                "./assets/Pickle.png",
+                enemy.id
+              );
+            }
+            mokeponEnemy.x = enemy.x;
+            mokeponEnemy.y = enemy.y;
+
+            return mokeponEnemy
+          }
+        });
+      });
+    }
+  });
 }
 
 function moverPikachuRight() {
@@ -572,7 +662,7 @@ function aPressedKey(event) {
 }
 
 function getPet() {
-  // This function will return the mokepo according to the player's choosing
+  // This function will return the mokepon according to the player's choosing
   for (let i = 0; i < Mokepones.length; i++) {
     if (mascotaJugador === Mokepones[i].name) {
       return Mokepones[i];
